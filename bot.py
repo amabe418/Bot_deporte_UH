@@ -6,7 +6,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # region Metodos
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("¡Hola, te doy la bienvenida al bot de deportes de la Universidad de la Habana!")
+    await update.message.reply_text("¡Hola, profesor Fernando, te doy la bienvenida al bot de deportes de la Universidad de la Habana!")
 
 async def horario(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Los horarios aún no están disponibles, pero pronto lo estarán.")
