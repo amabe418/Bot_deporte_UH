@@ -1,7 +1,9 @@
 # hupper -m bot.py
-import gspread
-from google.oauth2.service_account import Credentials
+import os
+import threading
+from flask import Flask
 from telegram import Update
+from google.oauth2.service_account import Credentials
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # region Metodos
@@ -14,14 +16,24 @@ async def horario(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # endregion
 
 # region Principal
+app = Flask(__name__)
 
 token = "7906733724:AAHvuyxL5t9lr5_NZpnphckAeL1Zj3Ogw10"
 application = ApplicationBuilder().token(token).build()
 application.add_handler( CommandHandler("start", welcome ))
 application.add_handler(CommandHandler("horario", horario))
-application.run_polling(allowed_updates=Update.ALL_TYPES)
+# application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+@app.route('/')
+def home():
+    return "El bot de Telegram está funcionando."
+
+def start_telegram_bot():
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+thread = threading.Thread(target=start_telegram_bot)
+thread.start()
 # endregion
 
-# region Despliegue
 
 #endregion
