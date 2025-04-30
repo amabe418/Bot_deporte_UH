@@ -4,4 +4,4 @@ docker build -t bot-telegram .
 
 # Ejecutar el contenedor
 echo "Ejecutando el contenedor..."
-docker run bot-telegram
+docker run -d --name bot-telegram-container bot-telegram

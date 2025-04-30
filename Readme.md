@@ -1,6 +1,6 @@
 # Bot de Deportes de la Universidad de La Habana
 
-Este proyecto es un bot de Telegram diseñado para proporcionar información sobre deporte en la Universidad de La Habana.
+Este proyecto es un bot de Telegram diseñado para proporcionar información sobre deportes, profesores e instalaciones deportivas de la Universidad de La Habana.
 
 ## Características
 
@@ -21,7 +21,7 @@ Este proyecto es un bot de Telegram diseñado para proporcionar información sob
      ```bash
      ./run.sh
      ```
-   - Este script construirá la imagen de Docker con el nombre `bot-telegram` y ejecutará el contenedor.
+   - Este script construirá la imagen de Docker con el nombre `bot-telegram` y ejecutará el contenedor con el nombre `bot-telegram-container`.
 
 2. **Interacción con el bot**:
    - Una vez que el contenedor esté en ejecución, puedes interactuar con el bot en Telegram utilizando los comandos disponibles.
