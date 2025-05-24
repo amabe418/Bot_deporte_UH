@@ -1,6 +1,8 @@
 # hupper -m bot.py
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import json
+from telegram import Update, InlineKeyboardButton,InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes,CallbackQueryHandler
+from telegram.helpers import escape_markdown
 
 # region Datos
 # Información sobre deportes
@@ -75,6 +77,12 @@ instalaciones = [
     "25. Almacenes (6)",
     "26. Cafeterías (2)"
 ]
+
+#informacion de los profesores
+
+with open("profesores.json","r",encoding="utf-8") as f:
+    profesores_info = json.load(f)
+
 # endregion
 
 # region Metodos
@@ -97,12 +105,85 @@ async def listar_deportes(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(mensaje, parse_mode='Markdown')
 
 async def listar_profesores(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    mensaje = "👨‍🏫 *PERSONAL DOCENTE INVESTIGADOR (PDI)*\n\n"
+    # mensaje = "👨‍🏫 *PERSONAL DOCENTE INVESTIGADOR (PDI)*\n\n"
     
-    for profesor in profesores:
-        mensaje += f"{profesor}\n"
+    # for profesor in profesores:
+    #     mensaje += f"{profesor}\n"
     
-    await update.message.reply_text(mensaje, parse_mode='Markdown')
+    # await update.message.reply_text(mensaje, parse_mode='Markdown')
+
+  
+    keyboard = [
+        [InlineKeyboardButton(nombre, callback_data=nombre)] 
+        for nombre in profesores_info.keys()
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text(
+        "Selecciona un profesor para ver más información:",
+        reply_markup=reply_markup
+    )
+    
+
+async def mostrar_info_profesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    if query.data == "volver_profesores":
+        return await listar_profesores_callback(update, context)
+
+    nombre = query.data
+    info = profesores_info.get(nombre)
+
+    if info:
+        deportes = escape_markdown(', '.join(info.get("deportes", [])), version=2)
+        contacto = escape_markdown(info.get("contacto", "No disponible"), version=2)
+        horarios = escape_markdown(info.get("horarios", "No disponible"), version=2)
+        nombre_escapado = escape_markdown(nombre, version=2)
+
+        # Procesar los lugares, reemplazando '-' por 'No definido' y escapando cada uno
+        lugares_raw = info.get("lugares", [])
+        lugares = [escape_markdown(l if l != "-" else "No definido", version=2) for l in lugares_raw]
+        lugares_str = ', '.join(lugares)
+
+        mensaje = (
+            f"👨‍🏫 *{nombre_escapado}*\n\n"
+            f"🏅 *Deportes:* {deportes}\n"
+            f"📞 *Contacto:* {contacto}\n"
+            f"🕒 *Horarios:* {horarios}\n"
+            f"📍 *Lugares:* {lugares_str}"
+        )
+    else:
+        mensaje = escape_markdown(f"No hay información disponible para {nombre}.", version=2)
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔙 Volver a la lista", callback_data="volver_profesores")]
+    ])
+
+    await query.edit_message_text(
+        text=mensaje,
+        reply_markup=reply_markup,
+        parse_mode='MarkdownV2'
+    )
+
+
+async def listar_profesores_callback(update:Update,context:ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    await query.answer()
+
+    keyboard = [
+        [InlineKeyboardButton(nombre, callback_data=nombre)]
+        for nombre in profesores_info.keys()
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await query.edit_message_text(
+        "Selecciona un profesor para ver más información:",
+        reply_markup=reply_markup
+    )
 
 async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "🏟️ *INSTALACIONES DEPORTIVAS*\n\n"
@@ -112,6 +193,7 @@ async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYP
     
     await update.message.reply_text(mensaje, parse_mode='Markdown')
 
+
 async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "📋 *Comandos disponibles:*\n\n"
     mensaje += "/start - Bienvenida al bot\n"
@@ -120,19 +202,28 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje += "/listar_profesores - Ver la lista de profesores\n"
     mensaje += "/listar_instalaciones - Ver la lista de instalaciones deportivas\n"
     mensaje += "/ayuda - Mostrar esta lista de comandos\n"
-    
-    await update.message.reply_text(mensaje, parse_mode='Markdown')
+
+    mensaje = mensaje.replace("-", "\\-").replace(".", "\\.").replace("(", "\\(").replace(")", "\\)").replace("_", "\\_")
+
+    await update.message.reply_text(mensaje, parse_mode='MarkdownV2')
+
+
 # endregion
 
 # region Principal
-token = "7906733724:AAHvuyxL5t9lr5_NZpnphckAeL1Zj3Ogw10"
-application = ApplicationBuilder().token(token).build()
+
+TOKEN= ""
+with open("token.txt","r") as f:
+    TOKEN = f.read().strip()
+
+application = ApplicationBuilder().token(TOKEN).build()
 application.add_handler(CommandHandler("start", welcome))
 application.add_handler(CommandHandler("horario", horario))
 application.add_handler(CommandHandler("listar_deportes", listar_deportes))
 application.add_handler(CommandHandler("listar_profesores", listar_profesores))
 application.add_handler(CommandHandler("listar_instalaciones", listar_instalaciones))
 application.add_handler(CommandHandler("ayuda", ayuda))
+application.add_handler(CallbackQueryHandler(mostrar_info_profesor))
 application.run_polling(allowed_updates=Update.ALL_TYPES)
 # endregion
 

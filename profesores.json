@@ -1,0 +1,21 @@
+{
+  "Cristina Raboso": {
+    "deportes": ["Ajedrez"],
+    "contacto": "54482669",
+    "horarios": "Todos los días, mañana/tarde",
+    "lugares": ["-"]
+  },
+  "Carlos Miyares": {
+    "deportes": ["Atletismo"],
+    "contacto": "51006637",
+    "horarios": "Martes y jueves a partir de las 3pm",
+    "lugares": ["Pista SEDER"]
+  },
+  "Gisel Arrieta": {
+    "deportes": ["Bádminton", "GMA"],
+    "contacto": "53814079",
+    "horarios": "2do y 4to sábados / Jueves 2pm a 4pm",
+    "lugares": ["Tabloncillo Valdés Daussá", "Colchón de judo"]
+  }
+  
+}
