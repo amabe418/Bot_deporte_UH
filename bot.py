@@ -83,11 +83,127 @@ instalaciones = [
 with open("profesores.json","r",encoding="utf-8") as f:
     profesores_info = json.load(f)
 
+# region Datos
+# Registro de usuarios
+def cargar_usuarios():
+    try:
+        with open("usuarios.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def guardar_usuarios(usuarios):
+    with open("usuarios.json", "w", encoding="utf-8") as f:
+        json.dump(usuarios, f, indent=4, ensure_ascii=False)
+
+usuarios = cargar_usuarios()
+
 # endregion
 
 # region Metodos
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("¡Hola, te doy la bienvenida al bot de deportes de la Universidad de la Habana!")
+    user = update.message.from_user
+    user_id = str(user.id)
+    
+    if user_id not in usuarios:
+        # Enviar mensaje solicitando nombre y apellido
+        await update.message.reply_text(
+            "¡Bienvenido! Para registrarte, por favor envía tu nombre y apellido en el siguiente formato:\n"
+            "/registrar Nombre Apellido"
+        )
+    else:
+        await update.message.reply_text(
+            f"¡Hola {usuarios[user_id]['nombre']}, bienvenido de nuevo al bot de deportes de la Universidad de la Habana!"
+        )
+
+async def registrar(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.message.from_user
+    user_id = str(user.id)
+    
+    # Verificar si se proporcionó el nombre y apellido
+    if len(context.args) < 2:
+        await update.message.reply_text(
+            "Por favor, proporciona tu nombre y apellido en el formato:\n"
+            "/registrar Nombre Apellido"
+        )
+        return
+    
+    # Obtener nombre y apellido del comando
+    nombre_completo = " ".join(context.args)
+    
+    # Guardar información básica del usuario
+    usuarios[user_id] = {
+        "nombre": nombre_completo,
+        "username": user.username if user.username else "No disponible",
+        "fecha_registro": str(update.message.date),
+        "tipo": None,
+        "info_adicional": {}
+    }
+    
+    # Preguntar si es profesor o estudiante
+    keyboard = [
+        [InlineKeyboardButton("Profesor", callback_data=f"tipo_profesor_{user_id}")],
+        [InlineKeyboardButton("Estudiante", callback_data=f"tipo_estudiante_{user_id}")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await update.message.reply_text(
+        "Por favor, selecciona tu tipo de usuario:",
+        reply_markup=reply_markup
+    )
+
+async def procesar_tipo_usuario(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    data = query.data.split('_')
+    tipo = data[1]
+    user_id = data[2]
+    
+    if tipo == "profesor":
+        usuarios[user_id]["tipo"] = "profesor"
+        guardar_usuarios(usuarios)
+        await query.edit_message_text(
+            f"¡Gracias por registrarte! Has sido registrado como profesor."
+        )
+    elif tipo == "estudiante":
+        usuarios[user_id]["tipo"] = "estudiante"
+        await query.edit_message_text(
+            "Por favor, envía tu carrera y año que cursas en el siguiente formato:\n"
+            "/info_estudiante Carrera Año"
+            "\nPor ejemplo: /info_estudiante Matemática 3"
+        )
+
+async def info_estudiante(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.message.from_user
+    user_id = str(user.id)
+    
+    if user_id not in usuarios or usuarios[user_id]["tipo"] != "estudiante":
+        await update.message.reply_text(
+            "Por favor, primero regístrate como estudiante usando el comando /registrar."
+        )
+        return
+    
+    if len(context.args) < 2:
+        await update.message.reply_text(
+            "Por favor, proporciona tu carrera y año en el formato:\n"
+            "/info_estudiante Carrera Año"
+        )
+        return
+    
+    carrera = " ".join(context.args[:-1])
+    año = context.args[-1]
+    
+    usuarios[user_id]["info_adicional"] = {
+        "carrera": carrera,
+        "año": año
+    }
+    
+    guardar_usuarios(usuarios)
+    
+    await update.message.reply_text(
+        f"¡Gracias! Has completado tu registro como estudiante de {carrera}, {año}° año."
+    )
 
 async def horario(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Los horarios aún no están disponibles, pero pronto lo estarán.")
@@ -212,12 +328,15 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # region Principal
 
-TOKEN= ""
-with open("token.txt","r") as f:
+TOKEN = ""
+with open("token.txt", "r") as f:
     TOKEN = f.read().strip()
 
 application = ApplicationBuilder().token(TOKEN).build()
 application.add_handler(CommandHandler("start", welcome))
+application.add_handler(CommandHandler("registrar", registrar))
+application.add_handler(CommandHandler("info_estudiante", info_estudiante))
+application.add_handler(CallbackQueryHandler(procesar_tipo_usuario, pattern=r"^tipo_"))
 application.add_handler(CommandHandler("horario", horario))
 application.add_handler(CommandHandler("listar_deportes", listar_deportes))
 application.add_handler(CommandHandler("listar_profesores", listar_profesores))
