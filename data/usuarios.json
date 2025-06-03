@@ -1,0 +1,14 @@
+{
+    "amabe003": {
+        "rol": "estudiante",
+        "nombre": "Amalia Beatriz Valiente Hinojosa",
+        "carrera": "Ciencia de la Computacion",
+        "a\u00f1o": "3"
+    },
+    "ATKPowder": {
+        "rol": "profesor",
+        "nombre": "Jorge Villalobos",
+        "deporte": "Judo",
+        "contacto": "54817057"
+    }
+}

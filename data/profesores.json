@@ -1,0 +1,80 @@
+[
+  {
+    "nombre": "Cristina Raboso",
+    "contacto": "54482669",
+    "deporte": "♟️ Ajedrez",
+    "usuario": "@a"
+  },
+  {
+    "nombre": "Yoan Sarduy",
+    "contacto": "55502429",
+    "deporte": "🏃 Atletismo",
+    "usuario": "@b"
+  },
+  { 
+    "nombre": "Mavel López",
+    "contacto": "52846531",
+    "deporte": "🏀 Baloncesto",
+    "usuario": "@c"
+  },
+  { 
+    "nombre": "Amaury Rives",
+    "contacto": "55586750",
+    "deporte": "⚾ Béisbol",
+    "usuario": "@d"
+  },
+  {
+    "nombre": "Erick Téllez",
+    "contacto": "58001423",
+    "deporte": "⚽ Fútbol",
+    "usuario": "@e"
+  },
+  {
+    "nombre": "Anabel Montero",
+    "contacto": "52862015",
+    "deporte": "💃 Gimnasia Musical Aerobia",
+    "usuario": "@f"
+  },
+  {
+    "nombre": "Yordanis Arencibia",
+    "contacto": "52853392",
+    "deporte": "🥋 Judo",
+    "usuario": "@g"
+  },
+  {
+    "nombre": "Osvaldo Vázquez",
+    "contacto": "52743987",
+    "deporte": "🥋 Kárate",
+    "usuario": "h"
+  },
+  {
+    "nombre": "José E. Mustelier",
+    "contacto": "52158639",
+    "deporte": "🏋️ Levantamiento de Pesas",
+    "usuario": "i"
+  },
+  {
+    "nombre": "Carlos Ulacia",
+    "contacto": "52906843",
+    "deporte": "🤼 Lucha",
+    "usuario": "@j"
+  },
+  {
+    "nombre": "Rafael Lastre",
+    "contacto": "58226613",
+    "deporte": "🏊 Natación",
+    "usuario": "@k"
+  },
+  { 
+    "nombre": "Liuba Rizo",
+    "contacto": "52847382",
+    "deporte": "🏓 Tenis de Mesa",
+    "usuario": "@l"
+  },
+  {
+    "nombre": "Ernesto Martínez",
+    "contacto": "55258171",
+    "deporte": "🏐 Voleibol",
+    "usuario": "@m"
+  }
+]

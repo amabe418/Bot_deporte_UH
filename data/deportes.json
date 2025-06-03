@@ -1,0 +1,106 @@
+[
+  {
+    "nombre": "♟️ Ajedrez",
+    "profesor": "Cristina Raboso",
+    "contacto": "54482669",
+    "dia": "Todos los días",
+    "hora": "Horario mañana/tarde",
+    "lugar": "-"
+  },
+  {
+    "nombre": "🏃 Atletismo",
+    "profesor": "Yoan Sarduy",
+    "contacto": "55502429",
+    "dia": "Lunes, miércoles y viernes",
+    "hora": "3:00 p.m. - 5:30 p.m.",
+    "lugar": "Estadio Pedro Marrero"
+  },
+  {
+    "nombre": "🏀 Baloncesto",
+    "profesor": "Mavel López",
+    "contacto": "52846531",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Baloncesto UH"
+  },
+  {
+    "nombre": "⚾ Béisbol",
+    "profesor": "Amaury Rives",
+    "contacto": "55586750",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Estadio Santiago Changa Mederos"
+  },
+  {
+    "nombre": "⚽ Fútbol",
+    "profesor": "Erick Téllez",
+    "contacto": "58001423",
+    "dia": "Lunes, miércoles y viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Campo de Fútbol UH"
+  },
+  {
+    "nombre": "💃 Gimnasia Musical Aerobia",
+    "profesor": "Anabel Montero",
+    "contacto": "52862015",
+    "dia": "Lunes a viernes",
+    "hora": "10:00 a.m. - 12:00 m.",
+    "lugar": "Gimnasio UH"
+  },
+  {
+    "nombre": "🥋 Judo",
+    "profesor": "Yordanis Arencibia",
+    "contacto": "52853392",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Judo UH"
+  },
+  {
+    "nombre": "🥋 Kárate",
+    "profesor": "Osvaldo Vázquez",
+    "contacto": "52743987",
+    "dia": "Martes y jueves",
+    "hora": "4:00 p.m. - 6:00 p.m.",
+    "lugar": "Gimnasio UH"
+  },
+  {
+    "nombre": "🏋️ Levantamiento de Pesas",
+    "profesor": "José E. Mustelier",
+    "contacto": "52158639",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Pesas UH"
+  },
+  {
+    "nombre": "🤼 Lucha",
+    "profesor": "Carlos Ulacia",
+    "contacto": "52906843",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Lucha UH"
+  },
+  {
+    "nombre": "🏊 Natación",
+    "profesor": "Rafael Lastre",
+    "contacto": "58226613",
+    "dia": "Lunes a viernes",
+    "hora": "8:00 a.m. - 10:00 a.m.",
+    "lugar": "Piscina UH"
+  },
+  {
+    "nombre": "🏓 Tenis de Mesa",
+    "profesor": "Liuba Rizo",
+    "contacto": "52847382",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Tenis de Mesa UH"
+  },
+  {
+    "nombre": "🏐 Voleibol",
+    "profesor": "Ernesto Martínez",
+    "contacto": "55258171",
+    "dia": "Lunes a viernes",
+    "hora": "3:00 p.m. - 6:00 p.m.",
+    "lugar": "Área de Voleibol UH"
+  }
+]
