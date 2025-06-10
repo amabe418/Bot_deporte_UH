@@ -1,0 +1,51 @@
+{
+  "Cristina Raboso": {
+    "deportes": ["Ajedrez"],
+    "contacto": "54482669",
+    "horarios": "Todos los días, mañana/tarde",
+    "lugares": ["-"]
+  },
+  "Carlos Miyares": {
+    "deportes": ["Atletismo"],
+    "contacto": "51006637",
+    "horarios": "Martes y jueves a partir de las 3pm",
+    "lugares": ["Pista SEDER"]
+  },
+  "Gisel Arrieta": {
+    "deportes": ["Bádminton", "GMA"],
+    "contacto": "53814079",
+    "horarios": "2do y 4to sábados / Jueves 2pm a 4pm",
+    "lugares": ["Tabloncillo Valdés Daussá", "Colchón de judo"]
+  },
+  "María Elena Soto": {
+    "deportes": ["Natación"],
+    "contacto": "52547896",
+    "horarios": "Lunes, miércoles y viernes 8 am a 10 am",
+    "lugares": ["Piscina Universitaria"]
+  },
+  "Oscar Medina": {
+    "deportes": ["Tenis de Mesa"],
+    "contacto": "53691245",
+    "horarios": "Martes y jueves 2 pm a 4 pm",
+    "lugares": ["Sala de tenis de mesa"]
+  },
+  "Laura Domínguez": {
+    "deportes": ["Escalada Deportiva"],
+    "contacto": "54987123",
+    "horarios": "Sábados 10 am a 1 pm",
+    "lugares": ["Muro de escalada"]
+  },
+  "Ricardo Pérez": {
+    "deportes": ["Boxeo"],
+    "contacto": "53216789",
+    "horarios": "Lunes a viernes 5 pm a 7 pm",
+    "lugares": ["Gimnasio de combate"]
+  },
+  "Daniela Suárez": {
+    "deportes": ["Taekwondo"],
+    "contacto": "54879312",
+    "horarios": "Martes y jueves 4 pm a 6 pm",
+    "lugares": ["Colchón de judo"]
+  }
+  
+}

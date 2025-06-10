@@ -1,0 +1,12 @@
+[
+  {
+    "titulo": "Torneo de fútbol",
+    "descripcion": "El torneo se realizará el próximo viernes en la cancha central a las 3pm.",
+    "fecha": "2025-06-15"
+  },
+  {
+    "titulo": "Clase de yoga al aire libre",
+    "descripcion": "Todos los martes y jueves a las 7am en el parque central.",
+    "fecha": "2025-06-10"
+  }
+]

@@ -4,25 +4,25 @@ from telegram import Update, InlineKeyboardButton,InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes,CallbackQueryHandler
 from telegram.helpers import escape_markdown
 
-# region Datos
+
 # Información sobre deportes
-deportes = [
-    {"nombre": "Ajedrez", "profesor": "Cristina Raboso", "contacto": "54482669", "dia": "Todos los días", "hora": "Horario mañana/tarde", "lugar": "-"},
-    {"nombre": "Atletismo", "profesor": "Carlos Miyares", "contacto": "51006637", "dia": "Martes y jueves", "hora": "A partir de las 3pm", "lugar": "Pista SEDER"},
-    {"nombre": "Bádminton", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "2do y 4to sábados de cada mes", "hora": "9:30 am a 12:30 pm", "lugar": "Tabloncillo Valdés Daussá"},
-    {"nombre": "Baloncesto 5x5", "profesor": "Jacquelin Sansó", "contacto": "53875195", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
-    {"nombre": "Baloncesto 3x3", "profesor": "Abdel Carlos Santana", "contacto": "58430871", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
-    {"nombre": "Beisbol", "profesor": "No tenemos profesor", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
-    {"nombre": "Beisbol 5", "profesor": "Profesor enfermo", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
-    {"nombre": "Futbol 11", "profesor": "Henry Ordoñez y Armando Najarro", "contacto": "53865784", "dia": "Martes y jueves", "hora": "3 pm", "lugar": "Terreno de fútbol"},
-    {"nombre": "Futsal (M-F)", "profesor": "José E. Cuevas", "contacto": "54753187", "dia": "Martes y viernes", "hora": "1 a 3 pm y 3 a 5 pm", "lugar": "Tabloncillo Valdés Daussá"},
-    {"nombre": "GMA", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "Jueves", "hora": "2 pm a 4 pm", "lugar": "Colchón de judo"},
-    {"nombre": "Judo", "profesor": "Juan Antonio Larrude", "contacto": "58081119", "dia": "Lunes y miércoles", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
-    {"nombre": "Kárate-TKVV", "profesor": "Humberto López y Victor", "contacto": "-", "dia": "Martes", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
-    {"nombre": "Tiro Deportivo", "profesor": "Julián Hernández", "contacto": "58452671", "dia": "Lunes", "hora": "1:30-2:30 pm", "lugar": "Campo de tiro"},
-    {"nombre": "Voleibol Sala (F-M)", "profesor": "Luis Martínez", "contacto": "53317557", "dia": "Miércoles", "hora": "2 a 3 pm y 3 a 4 pm", "lugar": "Tabloncillo Valdés Daussá"},
-    {"nombre": "Voleibol Playa", "profesor": "Luis O. Pedraza", "contacto": "54226189", "dia": "Miércoles", "hora": "2 a 3 pm", "lugar": "-"}
-]
+# deportes = [
+#     {"nombre": "Ajedrez", "profesor": "Cristina Raboso", "contacto": "54482669", "dia": "Todos los días", "hora": "Horario mañana/tarde", "lugar": "-"},
+#     {"nombre": "Atletismo", "profesor": "Carlos Miyares", "contacto": "51006637", "dia": "Martes y jueves", "hora": "A partir de las 3pm", "lugar": "Pista SEDER"},
+#     {"nombre": "Bádminton", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "2do y 4to sábados de cada mes", "hora": "9:30 am a 12:30 pm", "lugar": "Tabloncillo Valdés Daussá"},
+#     {"nombre": "Baloncesto 5x5", "profesor": "Jacquelin Sansó", "contacto": "53875195", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
+#     {"nombre": "Baloncesto 3x3", "profesor": "Abdel Carlos Santana", "contacto": "58430871", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
+#     {"nombre": "Beisbol", "profesor": "No tenemos profesor", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
+#     {"nombre": "Beisbol 5", "profesor": "Profesor enfermo", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
+#     {"nombre": "Futbol 11", "profesor": "Henry Ordoñez y Armando Najarro", "contacto": "53865784", "dia": "Martes y jueves", "hora": "3 pm", "lugar": "Terreno de fútbol"},
+#     {"nombre": "Futsal (M-F)", "profesor": "José E. Cuevas", "contacto": "54753187", "dia": "Martes y viernes", "hora": "1 a 3 pm y 3 a 5 pm", "lugar": "Tabloncillo Valdés Daussá"},
+#     {"nombre": "GMA", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "Jueves", "hora": "2 pm a 4 pm", "lugar": "Colchón de judo"},
+#     {"nombre": "Judo", "profesor": "Juan Antonio Larrude", "contacto": "58081119", "dia": "Lunes y miércoles", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
+#     {"nombre": "Kárate-TKVV", "profesor": "Humberto López y Victor", "contacto": "-", "dia": "Martes", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
+#     {"nombre": "Tiro Deportivo", "profesor": "Julián Hernández", "contacto": "58452671", "dia": "Lunes", "hora": "1:30-2:30 pm", "lugar": "Campo de tiro"},
+#     {"nombre": "Voleibol Sala (F-M)", "profesor": "Luis Martínez", "contacto": "53317557", "dia": "Miércoles", "hora": "2 a 3 pm y 3 a 4 pm", "lugar": "Tabloncillo Valdés Daussá"},
+#     {"nombre": "Voleibol Playa", "profesor": "Luis O. Pedraza", "contacto": "54226189", "dia": "Miércoles", "hora": "2 a 3 pm", "lugar": "-"}
+# ]
 
 # Lista de profesores
 profesores = [
@@ -80,23 +80,33 @@ instalaciones = [
 
 #informacion de los profesores
 
-with open("profesores.json","r",encoding="utf-8") as f:
+with open("BD/profesores.json","r",encoding="utf-8") as f:
     profesores_info = json.load(f)
+
+#actividades
+with open("BD/noticias.json","r",encoding="utf-8") as f:
+    actividades = json.load(f)
+
+with open("BD/deportes.json","r",encoding="utf-8") as f:
+    deportes_info = json.load(f)
+
 
 # region Datos
 # Registro de usuarios
 def cargar_usuarios():
     try:
-        with open("usuarios.json", "r", encoding="utf-8") as f:
+        with open("BD/usuarios.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
 
 def guardar_usuarios(usuarios):
-    with open("usuarios.json", "w", encoding="utf-8") as f:
+    with open("BD/usuarios.json", "w", encoding="utf-8") as f:
         json.dump(usuarios, f, indent=4, ensure_ascii=False)
 
 usuarios = cargar_usuarios()
+
+
 
 # endregion
 
@@ -208,17 +218,175 @@ async def info_estudiante(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def horario(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Los horarios aún no están disponibles, pero pronto lo estarán.")
 
+
+#region DEPORTES
+
+def generar_teclado_deportes(pagina: int, elementos_por_pagina: int = 5):
+    deportes = list(deportes_info.keys())
+    total_paginas = (len(deportes) + elementos_por_pagina - 1) // elementos_por_pagina
+
+    inicio = pagina * elementos_por_pagina
+    fin = inicio + elementos_por_pagina
+    deportes_pagina = deportes[inicio:fin]
+
+    # Botones para los deportes en esta página
+    botones = [
+        [InlineKeyboardButton(nombre, callback_data=f"deporte_{nombre}")]
+        for nombre in deportes_pagina
+    ]
+
+    # Botones de navegación
+    botones_navegacion = []
+    if pagina > 0:
+        botones_navegacion.append(InlineKeyboardButton("⬅️ Anterior", callback_data=f"pagina_deportes_{pagina - 1}"))
+    if pagina < total_paginas - 1:
+        botones_navegacion.append(InlineKeyboardButton("Siguiente ➡️", callback_data=f"pagina_deportes_{pagina + 1}"))
+
+    if botones_navegacion:
+        botones.append(botones_navegacion)
+
+    return InlineKeyboardMarkup(botones)
+
+
 async def listar_deportes(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    mensaje = "📝 *CARTELERA DE ENTRENAMIENTO DEPORTIVO SEDER-UH 2025*\n\n"
+    # mensaje = "📝 *CARTELERA DE ENTRENAMIENTO DEPORTIVO SEDER-UH 2025*\n\n"
     
-    for deporte in deportes:
-        mensaje += f"*DEPORTE:* {deporte['nombre']}\n"
-        mensaje += f"*PROFESOR:* {deporte['profesor']} {deporte['contacto']}\n"
-        mensaje += f"*DÍA:* {deporte['dia']}\n"
-        mensaje += f"*HORA:* {deporte['hora']}\n"
-        mensaje += f"*LUGAR:* {deporte['lugar']}\n\n"
+    # for deporte in deportes:
+    #     mensaje += f"*DEPORTE:* {deporte['nombre']}\n"
+    #     mensaje += f"*PROFESOR:* {deporte['profesor']} {deporte['contacto']}\n"
+    #     mensaje += f"*DÍA:* {deporte['dia']}\n"
+    #     mensaje += f"*HORA:* {deporte['hora']}\n"
+    #     mensaje += f"*LUGAR:* {deporte['lugar']}\n\n"
     
-    await update.message.reply_text(mensaje, parse_mode='Markdown')
+    # await update.message.reply_text(mensaje, parse_mode='Markdown')
+
+    reply_markup = generar_teclado_deportes(pagina=0)
+
+    # keyboard = [
+    #     [InlineKeyboardButton(nombre, callback_data=f"deporte_{nombre}")] 
+    #     for nombre in deportes_info.keys()
+    # ]
+
+    # reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text(
+        "Selecciona un deportes para ver más información:",
+        reply_markup=reply_markup
+    )
+
+
+async def mostrar_info_deporte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    if query.data == "volver_deportes":
+        return await listar_deportes_callback(update, context)
+
+    nombre = query.data.removeprefix("deporte_")
+    info = deportes_info.get(nombre)
+
+    if info:
+        profesor = escape_markdown(info.get("profesor", "No disponible"), version=2)
+        contacto = escape_markdown(info.get("contacto", "No disponible"), version=2)
+        dias = escape_markdown(info.get("dias","No disponible"),version =2)
+        horarios = escape_markdown(info.get("horario", "No disponible"), version=2)
+        nombre_escapado = escape_markdown(nombre, version=2)
+
+        # Procesar los lugares, reemplazando '-' por 'No definido' y escapando cada uno
+        lugares_raw = info.get("lugar", [])
+        lugares = [escape_markdown(l if l != "-" else "No definido", version=2) for l in lugares_raw]
+        lugares_str = ', '.join(lugares)
+
+        mensaje = (
+            f"🏅 *{nombre_escapado}*\n\n"
+            f"👨‍🏫 *Profesor:* {profesor}\n"
+            f"📞 *Contacto:* {contacto}\n"
+            f"📅 *Dias:* {dias}\n"
+            f"🕒 *Horarios:* {horarios}\n"
+            f"📍 *Lugares:* {lugares_str}"
+        )
+    else:
+        mensaje = escape_markdown(f"No hay información disponible para {nombre}.", version=2)
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔙 Volver a la lista", callback_data="volver_deportes")]
+    ])
+
+    await query.edit_message_text(
+        text=mensaje,
+        reply_markup=reply_markup,
+        parse_mode='MarkdownV2'
+    )
+
+async def listar_deportes_callback(update:Update,context:ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    await query.answer()
+
+    pagina = context.user_data.get('pagina_deportes', 0)
+    
+    reply_markup = generar_teclado_deportes(pagina=pagina)
+    # keyboard = [
+    #     [InlineKeyboardButton(nombre_d, callback_data=f"deporte_{nombre_d}")]
+    #     for nombre_d in deportes_info.keys()
+    # ]
+
+    # reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await query.edit_message_text(
+        "Selecciona un deporte para ver más información:",
+        reply_markup=reply_markup
+    )
+
+
+async def cambiar_pagina_deportes(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    # Extraer el número de página desde callback_data
+    _, _, pagina_str = query.data.split('_')
+    pagina = int(pagina_str)
+
+    context.user_data['pagina_deportes'] = pagina
+
+    reply_markup = generar_teclado_deportes(pagina=pagina)
+
+    await query.edit_message_text(
+        text="Selecciona un deporte para ver más información:",
+        reply_markup=reply_markup
+    )
+
+
+#endregion
+
+#region PROFESORES
+
+def generar_teclado_profesores(pagina: int, elementos_por_pagina: int = 5):
+    profesores = list(profesores_info.keys())
+    total_paginas = (len(profesores) + elementos_por_pagina - 1) // elementos_por_pagina
+
+    inicio = pagina * elementos_por_pagina
+    fin = inicio + elementos_por_pagina
+    profesores_pagina = profesores[inicio:fin]
+
+    # Botones para los deportes en esta página
+    botones = [
+        [InlineKeyboardButton(nombre, callback_data=f"profesor_{nombre}")]
+        for nombre in profesores_pagina
+    ]
+
+    # Botones de navegación
+    botones_navegacion = []
+    if pagina > 0:
+        botones_navegacion.append(InlineKeyboardButton("⬅️ Anterior", callback_data=f"pagina_profesores_{pagina - 1}"))
+    if pagina < total_paginas - 1:
+        botones_navegacion.append(InlineKeyboardButton("Siguiente ➡️", callback_data=f"pagina_profesores_{pagina + 1}"))
+
+    if botones_navegacion:
+        botones.append(botones_navegacion)
+
+    return InlineKeyboardMarkup(botones)
+
 
 async def listar_profesores(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # mensaje = "👨‍🏫 *PERSONAL DOCENTE INVESTIGADOR (PDI)*\n\n"
@@ -229,12 +397,14 @@ async def listar_profesores(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # await update.message.reply_text(mensaje, parse_mode='Markdown')
 
   
-    keyboard = [
-        [InlineKeyboardButton(nombre, callback_data=nombre)] 
-        for nombre in profesores_info.keys()
-    ]
+    # keyboard = [
+    #     [InlineKeyboardButton(nombre, callback_data=f"profesor_{nombre}")] 
+    #     for nombre in profesores_info.keys()
+    # ]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    #reply_markup = InlineKeyboardMarkup(keyboard)
+
+    reply_markup = generar_teclado_profesores(pagina=0)
 
     await update.message.reply_text(
         "Selecciona un profesor para ver más información:",
@@ -249,7 +419,7 @@ async def mostrar_info_profesor(update: Update, context: ContextTypes.DEFAULT_TY
     if query.data == "volver_profesores":
         return await listar_profesores_callback(update, context)
 
-    nombre = query.data
+    nombre = query.data.removeprefix("profesor_")
     info = profesores_info.get(nombre)
 
     if info:
@@ -289,17 +459,41 @@ async def listar_profesores_callback(update:Update,context:ContextTypes.DEFAULT_
     query = update.callback_query
     await query.answer()
 
-    keyboard = [
-        [InlineKeyboardButton(nombre, callback_data=nombre)]
-        for nombre in profesores_info.keys()
-    ]
+    pagina = context.user_data.get('pagina_profesores', 0)
+    
+    reply_markup = generar_teclado_profesores(pagina=pagina)
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # keyboard = [  
+    #     [InlineKeyboardButton(nombre, callback_data=f"profesor_{nombre}")]
+    #     for nombre in profesores_info.keys()
+    # ]
+
+    # reply_markup = InlineKeyboardMarkup(keyboard)
 
     await query.edit_message_text(
         "Selecciona un profesor para ver más información:",
         reply_markup=reply_markup
     )
+
+
+async def cambiar_pagina_profesores(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    # Extraer el número de página desde callback_data
+    _, _, pagina_str = query.data.split('_')
+    pagina = int(pagina_str)
+
+    context.user_data['pagina_profesores'] = pagina
+
+    reply_markup = generar_teclado_profesores(pagina=pagina)
+
+    await query.edit_message_text(
+        text="Selecciona un profesor para ver más información:",
+        reply_markup=reply_markup
+    )
+
+#endregion
 
 async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "🏟️ *INSTALACIONES DEPORTIVAS*\n\n"
@@ -310,10 +504,57 @@ async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYP
     await update.message.reply_text(mensaje, parse_mode='Markdown')
 
 
+
+#region ACTIVIDADES
+async def actividades(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    keyboard = [
+        [InlineKeyboardButton(deporte["nombre"], callback_data=f"actividad_{deporte['nombre']}")]
+        for deporte in deportes_info
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await update.message.reply_text(
+        "🏅 Selecciona una actividad para ver detalles:",
+        reply_markup=reply_markup
+    )
+
+async def mostrar_noticias(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not actividades:
+        await update.message.reply_text("No hay actividades disponibles en este momento.")
+        return
+
+    mensaje = "📰 *Noticias y Actividades Próximas:*\n\n"
+    for noticia in actividades:
+        mensaje += f"🔹 *{noticia['titulo']}* ({noticia['fecha']})\n"
+        mensaje += f"{noticia['descripcion']}\n\n"
+
+    await update.message.reply_text(mensaje, parse_mode="Markdown")
+
+
+async def actividades_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    keyboard = [
+        [InlineKeyboardButton(deporte["nombre"], callback_data=f"actividad_{deporte['nombre']}")]
+        for deporte in deportes_info
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    await query.edit_message_text(
+        text="🏅 Selecciona una actividad para ver detalles:",
+        reply_markup=reply_markup
+    )
+
+
+#endregion
+
 async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "📋 *Comandos disponibles:*\n\n"
     mensaje += "/start - Bienvenida al bot\n"
     mensaje += "/horario - Consultar horarios\n"
+    mensaje += "/actividades - Ver menú de actividades deportivas\n"
     mensaje += "/listar_deportes - Ver la lista de deportes disponibles\n"
     mensaje += "/listar_profesores - Ver la lista de profesores\n"
     mensaje += "/listar_instalaciones - Ver la lista de instalaciones deportivas\n"
@@ -342,8 +583,22 @@ application.add_handler(CommandHandler("listar_deportes", listar_deportes))
 application.add_handler(CommandHandler("listar_profesores", listar_profesores))
 application.add_handler(CommandHandler("listar_instalaciones", listar_instalaciones))
 application.add_handler(CommandHandler("ayuda", ayuda))
-application.add_handler(CallbackQueryHandler(mostrar_info_profesor))
+application.add_handler(CommandHandler("actividades", mostrar_noticias))
+
+application.add_handler(CallbackQueryHandler(mostrar_info_profesor,pattern="^profesor_"))
+application.add_handler(CallbackQueryHandler(mostrar_info_deporte,pattern="^deporte_"))
+
+
+application.add_handler(CallbackQueryHandler(listar_deportes_callback, pattern="^volver_deportes$"))
+application.add_handler(CallbackQueryHandler(listar_profesores_callback, pattern="^volver_profesores$"))
+
+
+application.add_handler(CallbackQueryHandler(cambiar_pagina_deportes, pattern="^pagina_deportes_"))
+application.add_handler(CallbackQueryHandler(cambiar_pagina_profesores, pattern="^pagina_profesores_"))
+
 application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
 # endregion
 
 # region Despliegue
