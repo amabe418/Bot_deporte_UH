@@ -6,23 +6,6 @@ from telegram.helpers import escape_markdown
 
 
 # Información sobre deportes
-# deportes = [
-#     {"nombre": "Ajedrez", "profesor": "Cristina Raboso", "contacto": "54482669", "dia": "Todos los días", "hora": "Horario mañana/tarde", "lugar": "-"},
-#     {"nombre": "Atletismo", "profesor": "Carlos Miyares", "contacto": "51006637", "dia": "Martes y jueves", "hora": "A partir de las 3pm", "lugar": "Pista SEDER"},
-#     {"nombre": "Bádminton", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "2do y 4to sábados de cada mes", "hora": "9:30 am a 12:30 pm", "lugar": "Tabloncillo Valdés Daussá"},
-#     {"nombre": "Baloncesto 5x5", "profesor": "Jacquelin Sansó", "contacto": "53875195", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
-#     {"nombre": "Baloncesto 3x3", "profesor": "Abdel Carlos Santana", "contacto": "58430871", "dia": "Lunes y jueves", "hora": "1:30 pm a 6 pm", "lugar": "Tabloncillo Valdés Daussá"},
-#     {"nombre": "Beisbol", "profesor": "No tenemos profesor", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
-#     {"nombre": "Beisbol 5", "profesor": "Profesor enfermo", "contacto": "-", "dia": "-", "hora": "-", "lugar": "-"},
-#     {"nombre": "Futbol 11", "profesor": "Henry Ordoñez y Armando Najarro", "contacto": "53865784", "dia": "Martes y jueves", "hora": "3 pm", "lugar": "Terreno de fútbol"},
-#     {"nombre": "Futsal (M-F)", "profesor": "José E. Cuevas", "contacto": "54753187", "dia": "Martes y viernes", "hora": "1 a 3 pm y 3 a 5 pm", "lugar": "Tabloncillo Valdés Daussá"},
-#     {"nombre": "GMA", "profesor": "Gisel Arrieta", "contacto": "53814079", "dia": "Jueves", "hora": "2 pm a 4 pm", "lugar": "Colchón de judo"},
-#     {"nombre": "Judo", "profesor": "Juan Antonio Larrude", "contacto": "58081119", "dia": "Lunes y miércoles", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
-#     {"nombre": "Kárate-TKVV", "profesor": "Humberto López y Victor", "contacto": "-", "dia": "Martes", "hora": "2 pm a 5 pm", "lugar": "Colchón de judo"},
-#     {"nombre": "Tiro Deportivo", "profesor": "Julián Hernández", "contacto": "58452671", "dia": "Lunes", "hora": "1:30-2:30 pm", "lugar": "Campo de tiro"},
-#     {"nombre": "Voleibol Sala (F-M)", "profesor": "Luis Martínez", "contacto": "53317557", "dia": "Miércoles", "hora": "2 a 3 pm y 3 a 4 pm", "lugar": "Tabloncillo Valdés Daussá"},
-#     {"nombre": "Voleibol Playa", "profesor": "Luis O. Pedraza", "contacto": "54226189", "dia": "Miércoles", "hora": "2 a 3 pm", "lugar": "-"}
-# ]
 
 # Lista de profesores
 profesores = [
@@ -494,6 +477,13 @@ async def cambiar_pagina_profesores(update: Update, context: ContextTypes.DEFAUL
     )
 
 #endregion
+
+
+def cargar_instalaciones():
+    with open("BD/instalaciones.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+instalaciones = cargar_instalaciones()
 
 async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "🏟️ *INSTALACIONES DEPORTIVAS*\n\n"
