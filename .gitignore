@@ -2,3 +2,4 @@
 .env
 token.txt
 usuarios.json
+admins.json

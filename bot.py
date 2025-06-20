@@ -1,11 +1,26 @@
 # hupper -m bot.py
 import json
 from telegram import Update, InlineKeyboardButton,InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes,CallbackQueryHandler
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes,CallbackQueryHandler,MessageHandler,filters
 from telegram.helpers import escape_markdown
-
-
+from functools import wraps
+from datetime import datetime
 # Información sobre deportes
+
+# Estados posibles (constantes)
+(
+    ESTADO_REGISTRO_NOMBRE,
+    ESTADO_REGISTRO_TIPO,
+    ESTADO_REGISTRO_CARRERA,
+    ESTADO_REGISTRO_AÑO,
+    ESTADO_DEPORTE_NOMBRE,
+    ESTADO_DEPORTE_PROFESOR,
+    ESTADO_DEPORTE_CONTACTO,
+    ESTADO_DEPORTE_DIAS,
+    ESTADO_DEPORTE_HORARIO,
+    ESTADO_DEPORTE_LUGARES
+) = range(10)  # Asigna números únicos a cada estado
+
 
 # Lista de profesores
 profesores = [
@@ -30,36 +45,6 @@ profesores = [
     "19. María Cristina Rafoso Mendiondo",
     "20. Rebeca Garcia Nasser"
 ]
-
-# Lista de instalaciones
-# instalaciones = [
-#     "1. Tabloncillo Ramiro Valdés Daussa",
-#     "2. Sala de deportes de combate",
-#     "3. Laboratorio de cultura física",
-#     "4. Cancha de usos múltiples (baloncesto, béisbol cinco, futbol sala, balonmano)",
-#     "5. Piscina de 50 metros",
-#     "6. Pista de atletismo",
-#     "7. Campo de fútbol 11 y futbol rugby",
-#     "8. Sala de gimnasia rítmica y artística",
-#     "9. Sala de gimnasia musical aerobia",
-#     "10. Área terapéutica de la cultura física",
-#     "11. Cancha de frontenis",
-#     "12. Campo de tiro",
-#     "13. Cancha de voleibol de playa",
-#     "14. Gimnasio biosaludable, sala de musculación",
-#     "15. Escalada",
-#     "16. Cátedra de ajedrez",
-#     "17. Cátedra de deporte electrónico",
-#     "18. Salón de conferencias Antonio Barroso",
-#     "19. Sala de informática",
-#     "20. Despachos (5)",
-#     "21. Cátedras del personal docente investigador con baños (4)",
-#     "22. Taquillas (4)",
-#     "23. Carpintería (2)",
-#     "24. Oficina administrativa",
-#     "25. Almacenes (6)",
-#     "26. Cafeterías (2)"
-# ]
 
 #informacion de los profesores
 
@@ -91,113 +76,347 @@ usuarios = cargar_usuarios()
 
 
 
+def cargar_admins():
+    with open("BD/admins.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+        return set(data["admins"])  # usar set para búsquedas rápidas
+
+ADMIN_IDS = cargar_admins()
+
+def usuario_registrado(func):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        user_id = str(update.effective_user.id)
+        if user_id not in usuarios:
+            await update.message.reply_text("🚫 Debes registrarte antes de usar este comando.")
+            return
+        return await func(update, context)
+    return wrapper
+
+
+
+def solo_admins(func):
+    @wraps(func)
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs):
+        user_id = str(update.effective_user.id)
+        if user_id not in ADMIN_IDS:
+            await update.message.reply_text("🚫 Este comando es solo para administradores.")
+            return
+        return await func(update, context, *args, **kwargs)
+    return wrapper
+
+
 # endregion
+
+#region ADMIN
+registro_estado = {}
+admin_add_state = {}
+
+@solo_admins
+async def agregar_deporte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # user_id = str(update.effective_user.id)
+    # admin_add_state[user_id] = "esperando_nombre_deporte"
+    # context.user_data.clear()  # Limpia cualquier info previa
+
+    # if update.callback_query:
+    #     await update.callback_query.edit_message_text("📥 Envíame el nombre del nuevo deporte:")
+    # else:
+    #     await update.message.reply_text("📥 Envíame el nombre del nuevo deporte:")
+
+        """Inicia el flujo para agregar deporte (solo admin)"""
+        
+        context.user_data.clear()
+        context.user_data['estado'] = ESTADO_DEPORTE_NOMBRE
+        await update.message.reply_text("📥 Envíame el nombre del nuevo deporte:")
+
+
+
+async def manejar_todos_los_mensajes(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handler único para todos los mensajes de texto"""
+    estado_actual = context.user_data.get('estado')
+    texto = update.message.text.strip()
+
+    if estado_actual == ESTADO_REGISTRO_NOMBRE:
+        context.user_data['nombre'] = texto
+        context.user_data['estado'] = ESTADO_REGISTRO_TIPO
+        
+        keyboard = [
+            [InlineKeyboardButton("Profesor", callback_data="tipo_profesor")],
+            [InlineKeyboardButton("Estudiante", callback_data="tipo_estudiante")]
+        ]
+        await update.message.reply_text(
+            "¿Eres profesor o estudiante?",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
+    elif estado_actual == ESTADO_REGISTRO_CARRERA:
+        context.user_data['carrera'] = texto
+        context.user_data['estado'] = ESTADO_REGISTRO_AÑO
+        await update.message.reply_text("¿Qué año cursas?")
+
+    elif estado_actual == ESTADO_REGISTRO_AÑO:
+        context.user_data['año'] = texto
+        await guardar_usuario_completo(update, context)
+        await update.message.reply_text("✅ ¡Registro completado con éxito!")
+        context.user_data.clear()
+
+    elif estado_actual == ESTADO_DEPORTE_NOMBRE:
+        context.user_data['nombre_deporte'] = texto
+        context.user_data['estado'] = ESTADO_DEPORTE_PROFESOR
+        await update.message.reply_text("👨‍🏫 ¿Cuál es el nombre del profesor?")
+
+    elif estado_actual == ESTADO_DEPORTE_PROFESOR:
+        context.user_data['profesor_deporte'] = texto
+        context.user_data['estado'] = ESTADO_DEPORTE_CONTACTO
+        await update.message.reply_text("📞 ¿Cuál es el contacto del profesor?")
+
+    elif estado_actual ==  ESTADO_DEPORTE_CONTACTO:
+        context.user_data['contacto_deporte']= texto
+        context.user_data['estado'] = ESTADO_DEPORTE_DIAS
+        await update.message.reply_text("📅 ¿Qué días se dicta este deporte?")
+    
+    elif estado_actual ==  ESTADO_DEPORTE_DIAS:
+        context.user_data['dias_deporte']= texto
+        context.user_data['estado'] = ESTADO_DEPORTE_HORARIO
+        await update.message.reply_text("⏰ ¿Cuál es el horario?")
+
+    elif estado_actual ==  ESTADO_DEPORTE_HORARIO:
+        context.user_data['dias_deporte']= texto
+        context.user_data['estado'] = ESTADO_DEPORTE_LUGARES
+        await update.message.reply_text("📍 ¿En qué lugar(es) se practica? (separa con comas)")
+        
+    elif estado_actual == ESTADO_DEPORTE_LUGARES:
+        lugares = [l.strip() for l in texto.split(",")]
+        context.user_data['lugares_deporte'] = lugares
+        await guardar_deporte(context.user_data)
+        await update.message.reply_text("✅ ¡Deporte agregado exitosamente!")
+        context.user_data.clear()
+
+
+async def manejar_tipo_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Maneja la selección de tipo (profesor/estudiante)"""
+    query = update.callback_query
+    await query.answer()
+    
+    tipo = query.data.split("_")[1]
+    context.user_data['tipo'] = tipo
+
+    if tipo == "profesor":
+        await guardar_usuario_completo(update, context)
+        await query.edit_message_text("¡Gracias! Has sido registrado como profesor.")
+    else:
+        context.user_data['estado'] = ESTADO_REGISTRO_CARRERA
+        await query.edit_message_text("¿Cuál es tu carrera?")
+
+# async def manejar_respuesta_agregar_deporte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     user_id = str(update.effective_user.id)
+#     if user_id not in admin_add_state:
+#         return
+
+#     estado = admin_add_state[user_id]
+#     texto = update.message.text.strip()
+
+#     if estado == "esperando_nombre_deporte":
+#         # Guarda nombre en context.user_data
+#         context.user_data["nombre_deporte"] = texto
+#         admin_add_state[user_id] = "esperando_profesor_deporte"
+
+#         # Preguntar quién será el profesor
+#         await update.message.reply_text("👨‍🏫 ¿Cuál es el nombre del profesor para este deporte?")
+
+#     elif estado == "esperando_profesor_deporte":
+#         context.user_data["profesor_deporte"] = texto
+#         admin_add_state[user_id] = "esperando_contacto_deporte"
+
+#         await update.message.reply_text("📞 ¿Cuál es el contacto del profesor?")
+
+#     elif estado == "esperando_contacto_deporte":
+#         context.user_data["contacto_deporte"] = texto
+#         admin_add_state[user_id] = "esperando_dias_deporte"
+
+#         await update.message.reply_text("📅 ¿Qué días se dicta este deporte?")
+
+#     elif estado == "esperando_dias_deporte":
+#         context.user_data["dias_deporte"] = texto
+#         admin_add_state[user_id] = "esperando_horario_deporte"
+
+#         await update.message.reply_text("⏰ ¿Cuál es el horario?")
+
+#     elif estado == "esperando_horario_deporte":
+#         context.user_data["horario_deporte"] = texto
+#         admin_add_state[user_id] = "esperando_lugares_deporte"
+
+#         await update.message.reply_text("📍 ¿En qué lugar(es) se practica? (separa con comas)")
+
+#     elif estado == "esperando_lugares_deporte":
+#         lugares = [lugar.strip() for lugar in texto.split(",")]
+#         context.user_data["lugares_deporte"] = lugares
+
+#         # Guardar en deportes.json
+#         await guardar_deporte(context.user_data)
+#         del admin_add_state[user_id]
+#         await update.message.reply_text("✅ ¡Deporte agregado exitosamente!")
+
+#         # Limpiar estado
+#         admin_add_state.pop(user_id)
+#         context.user_data.clear()
+
+
+async def guardar_deporte(data):
+    # Leer archivo
+    with open("deportes.json", "r", encoding="utf-8") as f:
+        deportes = json.load(f)
+
+    nombre = data["nombre_deporte"]
+
+    deportes[nombre] = {
+        "profesor": data["profesor_deporte"],
+        "contacto": data["contacto_deporte"],
+        "dias": data["dias_deporte"],
+        "horario": data["horario_deporte"],
+        "lugar": data["lugares_deporte"]
+    }
+
+    # Guardar archivo
+    with open("deportes.json", "w", encoding="utf-8") as f:
+        json.dump(deportes, f, indent=4, ensure_ascii=False)
+
+
+@solo_admins
+async def agregar_profesor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text("👨‍🏫 ¿Cuál es el nombre del nuevo profesor?")
+    else:
+        await update.message.reply_text("👨‍🏫 ¿Cuál es el nombre del nuevo profesor?")
+
+
+# Este handler recibe la pulsación de botones y redirige a la función correcta
+async def admin_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    user_id = str(query.from_user.id)
+    await query.answer()  # Para que desaparezca el "reloj"
+
+    if user_id not in ADMIN_IDS:
+        await query.edit_message_text("🚫 Solo administradores pueden usar esto.")
+        return
+
+    if query.data == "agregar_deporte":
+        await agregar_deporte(update, context)
+    elif query.data == "agregar_profesor":
+        await agregar_profesor(update, context)
+    else:
+        await query.edit_message_text("Opción no reconocida.")
+
+
+
+#endregion
+
+
 
 # region Metodos
 async def welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
     user_id = str(user.id)
-    
+
     if user_id not in usuarios:
-        # Enviar mensaje solicitando nombre y apellido
+        registro_estado[user_id] = "esperando_nombre"
         await update.message.reply_text(
-            "¡Bienvenido! Para registrarte, por favor envía tu nombre y apellido en el siguiente formato:\n"
-            "/registrar Nombre Apellido"
+            "👋 <b>¡Bienvenido al Bot Deportivo de la Universidad de La Habana!</b>\n\n"
+            "🔐 Para comenzar, necesitamos algunos datos.\n\n"
+            "📝 ¿Cuál es tu <b>nombre completo</b>?",
+            parse_mode="HTML"
         )
     else:
         await update.message.reply_text(
-            f"¡Hola {usuarios[user_id]['nombre']}, bienvenido de nuevo al bot de deportes de la Universidad de la Habana!"
+            f"🙌 <b>¡Hola {usuarios[user_id]['nombre']}!</b>\n\n"
+            "🏟️ Bienvenido de nuevo al Bot de Deportes de la Universidad de La Habana.\n"
+            "Explora actividades, entrenamientos y más. 🏀🏐🏊",
+            parse_mode="HTML"
         )
+    
 
-async def registrar(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.message.from_user
-    user_id = str(user.id)
-    
-    # Verificar si se proporcionó el nombre y apellido
-    if len(context.args) < 2:
-        await update.message.reply_text(
-            "Por favor, proporciona tu nombre y apellido en el formato:\n"
-            "/registrar Nombre Apellido"
-        )
-        return
-    
-    # Obtener nombre y apellido del comando
-    nombre_completo = " ".join(context.args)
-    
-    # Guardar información básica del usuario
-    usuarios[user_id] = {
-        "nombre": nombre_completo,
-        "username": user.username if user.username else "No disponible",
-        "fecha_registro": str(update.message.date),
-        "tipo": None,
-        "info_adicional": {}
-    }
-    
-    # Preguntar si es profesor o estudiante
-    keyboard = [
-        [InlineKeyboardButton("Profesor", callback_data=f"tipo_profesor_{user_id}")],
-        [InlineKeyboardButton("Estudiante", callback_data=f"tipo_estudiante_{user_id}")]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    
-    await update.message.reply_text(
-        "Por favor, selecciona tu tipo de usuario:",
-        reply_markup=reply_markup
-    )
+    if user_id in ADMIN_IDS:
+        keyboard = [
+            [InlineKeyboardButton("➕ Agregar Deporte", callback_data="agregar_deporte")],
+            [InlineKeyboardButton("➕ Agregar Profesor", callback_data="agregar_profesor")],
+            # Agrega más botones si quieres
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text("Bienvenido administrador, elige una acción:", reply_markup=reply_markup)
+    else:
+        await update.message.reply_text("No eres admin, elige una acción:")
 
-async def procesar_tipo_usuario(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def registro(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.message.from_user.id)
+    registro_estado[user_id] = "esperando_nombre"
+    await update.message.reply_text("¿Cuál es tu nombre completo?")
+
+# async def manejar_respuesta_registro(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     user = update.message.from_user
+#     user_id = str(user.id)
+#     texto = update.message.text.strip()
+
+#     if user_id not in registro_estado:
+#         return
+
+#     estado = registro_estado[user_id]
+
+#     if estado == "esperando_nombre":
+#         context.user_data["nombre"] = texto
+#         registro_estado[user_id] = "esperando_tipo"
+#         keyboard = [
+#             [InlineKeyboardButton("Profesor", callback_data="tipo_profesor")],
+#             [InlineKeyboardButton("Estudiante", callback_data="tipo_estudiante")]
+#         ]
+#         await update.message.reply_text("¿Eres profesor o estudiante?", reply_markup=InlineKeyboardMarkup(keyboard))
+
+#     elif estado == "esperando_carrera":
+#         context.user_data["carrera"] = texto
+#         registro_estado[user_id] = "esperando_año"
+#         await update.message.reply_text("¿Qué año cursas?")
+
+#     elif estado == "esperando_año":
+#         context.user_data["año"] = texto
+#         guardar_usuario_completo(user_id, user.username, context)
+#         del registro_estado[user_id]
+#         await update.message.reply_text(
+#             "✅ *¡Registro completado con éxito!*\n\n"
+#             "Ya puedes comenzar a usar el bot y explorar las actividades deportivas 🏀🏐🏊",
+#             parse_mode="Markdown"
+#         )
+#         del registro_estado[user_id]
+
+async def manejar_tipo_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
-    data = query.data.split('_')
-    tipo = data[1]
-    user_id = data[2]
-    
+
+    tipo = query.data.split("_")[1]
+    user_id = str(query.from_user.id)
+    context.user_data["tipo"] = tipo
+
     if tipo == "profesor":
-        usuarios[user_id]["tipo"] = "profesor"
-        guardar_usuarios(usuarios)
-        await query.edit_message_text(
-            f"¡Gracias por registrarte! Has sido registrado como profesor."
-        )
-    elif tipo == "estudiante":
-        usuarios[user_id]["tipo"] = "estudiante"
-        await query.edit_message_text(
-            "Por favor, envía tu carrera y año que cursas en el siguiente formato:\n"
-            "/info_estudiante Carrera Año"
-            "\nPor ejemplo: /info_estudiante Matemática 3"
-        )
+        guardar_usuario_completo(user_id, query.from_user.username, context)
+        await query.edit_message_text("¡Gracias! Has sido registrado como profesor.")
+        registro_estado.pop(user_id, None)
+    else:
+        registro_estado[user_id] = "esperando_carrera"
+        await query.edit_message_text("¿Cuál es tu carrera?")
 
-async def info_estudiante(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.message.from_user
-    user_id = str(user.id)
-    
-    if user_id not in usuarios or usuarios[user_id]["tipo"] != "estudiante":
-        await update.message.reply_text(
-            "Por favor, primero regístrate como estudiante usando el comando /registrar."
-        )
-        return
-    
-    if len(context.args) < 2:
-        await update.message.reply_text(
-            "Por favor, proporciona tu carrera y año en el formato:\n"
-            "/info_estudiante Carrera Año"
-        )
-        return
-    
-    carrera = " ".join(context.args[:-1])
-    año = context.args[-1]
-    
-    usuarios[user_id]["info_adicional"] = {
-        "carrera": carrera,
-        "año": año
+def guardar_usuario_completo(user_id, username, context):
+    usuarios[user_id] = {
+        "nombre": context.user_data.get("nombre", ""),
+        "username": username if username else "No disponible",
+        "fecha_registro": str(datetime.now()),
+        "tipo": context.user_data.get("tipo", ""),
+        "info_adicional": {
+            "carrera": context.user_data.get("carrera", ""),
+            "año": context.user_data.get("año", "")
+        }
     }
-    
     guardar_usuarios(usuarios)
-    
-    await update.message.reply_text(
-        f"¡Gracias! Has completado tu registro como estudiante de {carrera}, {año}° año."
-    )
 
+
+@usuario_registrado
 async def horario(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Los horarios aún no están disponibles, pero pronto lo estarán.")
 
@@ -230,7 +449,7 @@ def generar_teclado_deportes(pagina: int, elementos_por_pagina: int = 5):
 
     return InlineKeyboardMarkup(botones)
 
-
+@usuario_registrado
 async def listar_deportes(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # mensaje = "📝 *CARTELERA DE ENTRENAMIENTO DEPORTIVO SEDER-UH 2025*\n\n"
     
@@ -256,7 +475,6 @@ async def listar_deportes(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Selecciona un deportes para ver más información:",
         reply_markup=reply_markup
     )
-
 
 async def mostrar_info_deporte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -370,7 +588,7 @@ def generar_teclado_profesores(pagina: int, elementos_por_pagina: int = 5):
 
     return InlineKeyboardMarkup(botones)
 
-
+@usuario_registrado
 async def listar_profesores(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # mensaje = "👨‍🏫 *PERSONAL DOCENTE INVESTIGADOR (PDI)*\n\n"
     
@@ -485,6 +703,7 @@ def cargar_instalaciones():
 
 instalaciones = cargar_instalaciones()
 
+@usuario_registrado
 async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "🏟️ *INSTALACIONES DEPORTIVAS*\n\n"
     
@@ -496,6 +715,7 @@ async def listar_instalaciones(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 #region ACTIVIDADES
+
 async def actividades(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
@@ -509,6 +729,7 @@ async def actividades(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
+@usuario_registrado
 async def mostrar_noticias(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not actividades:
         await update.message.reply_text("No hay actividades disponibles en este momento.")
@@ -521,7 +742,7 @@ async def mostrar_noticias(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(mensaje, parse_mode="Markdown")
 
-
+@usuario_registrado
 async def actividades_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -539,7 +760,7 @@ async def actividades_callback(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 #endregion
-
+@usuario_registrado
 async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mensaje = "📋 *Comandos disponibles:*\n\n"
     mensaje += "/start - Bienvenida al bot\n"
@@ -563,11 +784,26 @@ TOKEN = ""
 with open("token.txt", "r") as f:
     TOKEN = f.read().strip()
 
+# Define tus filtros como clases
+
+
+
 application = ApplicationBuilder().token(TOKEN).build()
 application.add_handler(CommandHandler("start", welcome))
-application.add_handler(CommandHandler("registrar", registrar))
-application.add_handler(CommandHandler("info_estudiante", info_estudiante))
-application.add_handler(CallbackQueryHandler(procesar_tipo_usuario, pattern=r"^tipo_"))
+application.add_handler(CommandHandler("registrar", registro))
+
+
+application.add_handler(MessageHandler(
+        filters.TEXT & ~filters.COMMAND & filters.ChatType.PRIVATE,
+        manejar_todos_los_mensajes
+    ))
+
+application.add_handler(CallbackQueryHandler(manejar_tipo_callback, pattern="^tipo_"))
+
+
+# application.add_handler(CommandHandler("registrar", registrar))
+# application.add_handler(CommandHandler("info_estudiante", info_estudiante))
+# application.add_handler(CallbackQueryHandler(procesar_tipo_usuario, pattern=r"^tipo_"))
 application.add_handler(CommandHandler("horario", horario))
 application.add_handler(CommandHandler("listar_deportes", listar_deportes))
 application.add_handler(CommandHandler("listar_profesores", listar_profesores))
@@ -585,6 +821,12 @@ application.add_handler(CallbackQueryHandler(listar_profesores_callback, pattern
 
 application.add_handler(CallbackQueryHandler(cambiar_pagina_deportes, pattern="^pagina_deportes_"))
 application.add_handler(CallbackQueryHandler(cambiar_pagina_profesores, pattern="^pagina_profesores_"))
+
+#ADMIN
+application.add_handler(CommandHandler("agregar_deporte", agregar_deporte))
+application.add_handler(CommandHandler("agregar_profesor", agregar_profesor))
+application.add_handler(CallbackQueryHandler(admin_callback_handler, pattern="^(agregar_deporte|agregar_profesor)$"))
+
 
 application.run_polling(allowed_updates=Update.ALL_TYPES)
 
