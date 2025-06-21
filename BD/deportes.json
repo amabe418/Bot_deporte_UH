@@ -133,5 +133,14 @@
         "lugar": [
             "-"
         ]
+    },
+    "Surf": {
+        "profesor": "Pedr",
+        "contacto": "5555555",
+        "dias": "fines de semana",
+        "horario": "9am-12pm",
+        "lugar": [
+            "playas del este"
+        ]
     }
 }
