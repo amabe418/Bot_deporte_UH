@@ -1,108 +1,137 @@
 {
     "Ajedrez": {
-      "profesor": "Cristina Raboso",
-      "contacto": "54482669",
-      "dias": "Todos los días",
-      "horario": "Horario mañana/tarde",
-      "lugar": ["-"]
+        "profesor": "Cristina Raboso",
+        "contacto": "54482669",
+        "dias": "Todos los días",
+        "horario": "Horario mañana/tarde",
+        "lugar": [
+            "-"
+        ]
     },
     "Atletismo": {
-      "profesor": "Carlos Miyares",
-      "contacto": "51006637",
-      "dias": "Martes y jueves",
-      "horario": "A partir de las 3pm",
-      "lugar": ["Pista SEDER"]
+        "profesor": "Carlos Miyares",
+        "contacto": "51006637",
+        "dias": "Martes y jueves",
+        "horario": "A partir de las 3pm",
+        "lugar": [
+            "Pista SEDER"
+        ]
     },
     "Bádminton": {
-      "profesor": "Gisel Arrieta",
-      "contacto": "53814079",
-      "dias": "2do y 4to sábados de cada mes",
-      "horario": "9:30 am a 12:30 pm",
-      "lugar": ["Tabloncillo Valdés Daussá"]
+        "profesor": "Gisel Arrieta",
+        "contacto": "53814079",
+        "dias": "2do y 4to sábados de cada mes",
+        "horario": "9:30 am a 12:30 pm",
+        "lugar": [
+            "Tabloncillo Valdés Daussá"
+        ]
     },
     "Baloncesto 5x5": {
-      "profesor": "Jacquelin Sansó",
-      "contacto": "53875195",
-      "dias": "Lunes y jueves",
-      "horario": "1:30 pm a 6 pm",
-      "lugar": ["Tabloncillo Valdés Daussá"]
+        "profesor": "Jacquelin Sansó",
+        "contacto": "53875195",
+        "dias": "Lunes y jueves",
+        "horario": "1:30 pm a 6 pm",
+        "lugar": [
+            "Tabloncillo Valdés Daussá"
+        ]
     },
     "Baloncesto 3x3": {
-      "profesor": "Abdel Carlos Santana",
-      "contacto": "58430871",
-      "dias": "Lunes y jueves",
-      "horario": "1:30 pm a 6 pm",
-      "lugar": ["Tabloncillo Valdés Daussá"]
+        "profesor": "Abdel Carlos Santana",
+        "contacto": "58430871",
+        "dias": "Lunes y jueves",
+        "horario": "1:30 pm a 6 pm",
+        "lugar": [
+            "Tabloncillo Valdés Daussá"
+        ]
     },
     "Beisbol": {
-      "profesor": "No tenemos profesor",
-      "contacto": "-",
-      "dias": "-",
-      "horario": "-",
-      "lugar": ["-"]
+        "profesor": "No tenemos profesor",
+        "contacto": "-",
+        "dias": "-",
+        "horario": "-",
+        "lugar": [
+            "-"
+        ]
     },
     "Beisbol 5": {
-      "profesor": "Profesor enfermo",
-      "contacto": "-",
-      "dias": "-",
-      "horario": "-",
-      "lugar": ["-"]
+        "profesor": "Profesor enfermo",
+        "contacto": "-",
+        "dias": "-",
+        "horario": "-",
+        "lugar": [
+            "-"
+        ]
     },
     "Futbol 11": {
-      "profesor": "Henry Ordoñez y Armando Najarro",
-      "contacto": "53865784",
-      "dias": "Martes y jueves",
-      "horario": "3 pm",
-      "lugar": ["Terreno de fútbol"]
+        "profesor": "Henry Ordoñez y Armando Najarro",
+        "contacto": "53865784",
+        "dias": "Martes y jueves",
+        "horario": "3 pm",
+        "lugar": [
+            "Terreno de fútbol"
+        ]
     },
     "Futsal (M-F)": {
-      "profesor": "José E. Cuevas",
-      "contacto": "54753187",
-      "dias": "Martes y viernes",
-      "horario": "1 a 3 pm y 3 a 5 pm",
-      "lugar": ["Tabloncillo Valdés Daussá"]
+        "profesor": "José E. Cuevas",
+        "contacto": "54753187",
+        "dias": "Martes y viernes",
+        "horario": "1 a 3 pm y 3 a 5 pm",
+        "lugar": [
+            "Tabloncillo Valdés Daussá"
+        ]
     },
     "GMA": {
-      "profesor": "Gisel Arrieta",
-      "contacto": "53814079",
-      "dias": "Jueves",
-      "horario": "2 pm a 4 pm",
-      "lugar": ["Colchón de judo"]
+        "profesor": "Gisel Arrieta",
+        "contacto": "53814079",
+        "dias": "Jueves",
+        "horario": "2 pm a 4 pm",
+        "lugar": [
+            "Colchón de judo"
+        ]
     },
     "Judo": {
-      "profesor": "Juan Antonio Larrude",
-      "contacto": "58081119",
-      "dias": "Lunes y miércoles",
-      "horario": "2 pm a 5 pm",
-      "lugar": ["Colchón de judo"]
+        "profesor": "Juan Antonio Larrude",
+        "contacto": "58081119",
+        "dias": "Lunes y miércoles",
+        "horario": "2 pm a 5 pm",
+        "lugar": [
+            "Colchón de judo"
+        ]
     },
     "Kárate-TKVV": {
-      "profesor": "Humberto López y Victor",
-      "contacto": "-",
-      "dias": "Martes",
-      "horario": "2 pm a 5 pm",
-      "lugar": ["Colchón de judo"]
+        "profesor": "Humberto López y Victor",
+        "contacto": "-",
+        "dias": "Martes",
+        "horario": "2 pm a 5 pm",
+        "lugar": [
+            "Colchón de judo"
+        ]
     },
     "Tiro Deportivo": {
-      "profesor": "Julián Hernández",
-      "contacto": "58452671",
-      "dias": "Lunes",
-      "horario": "1:30-2:30 pm",
-      "lugar": ["Campo de tiro"]
+        "profesor": "Julián Hernández",
+        "contacto": "58452671",
+        "dias": "Lunes",
+        "horario": "1:30-2:30 pm",
+        "lugar": [
+            "Campo de tiro"
+        ]
     },
     "Voleibol Sala (F-M)": {
-      "profesor": "Luis Martínez",
-      "contacto": "53317557",
-      "dias": "Miércoles",
-      "horario": "2 a 3 pm y 3 a 4 pm",
-      "lugar": ["Tabloncillo Valdés Daussá"]
+        "profesor": "Luis Martínez",
+        "contacto": "53317557",
+        "dias": "Miércoles",
+        "horario": "2 a 3 pm y 3 a 4 pm",
+        "lugar": [
+            "Tabloncillo Valdés Daussá"
+        ]
     },
     "Voleibol Playa": {
-      "profesor": "Luis O. Pedraza",
-      "contacto": "54226189",
-      "dias": "Miércoles",
-      "horario": "2 a 3 pm",
-      "lugar":["-"]
+        "profesor": "Luis O. Pedraza",
+        "contacto": "54226189",
+        "dias": "Miércoles",
+        "horario": "2 a 3 pm",
+        "lugar": [
+            "-"
+        ]
     }
-
 }
