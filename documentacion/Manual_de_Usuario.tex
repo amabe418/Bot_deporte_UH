@@ -1,0 +1,641 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+\geometry{margin=2.5cm}
+
+% Configuración de colores
+\definecolor{azul}{RGB}{0,102,204}
+\definecolor{verde}{RGB}{0,153,76}
+\definecolor{rojo}{RGB}{204,0,0}
+\definecolor{gris}{RGB}{128,128,128}
+
+% Configuración de hipervínculos
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azul,
+    filecolor=azul,
+    urlcolor=azul,
+    citecolor=azul
+}
+
+% Configuración de títulos
+\titleformat{\section}
+{\Large\bfseries\color{azul}}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\large\bfseries\color{verde}}
+{\thesubsection}{1em}{}
+
+% Encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{Bot Deportivo UH - Manual de Usuario}
+\setlength{\headheight}{16pt}
+
+\title{\textbf{\Huge Manual de Usuario}\\
+\Large Bot Deportivo de la Universidad de La Habana}
+\author{Sistema de Gestión Deportiva}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Introducción}
+
+Este manual describe el funcionamiento del Bot Deportivo de la Universidad de La Habana, diseñado para proporcionar información sobre actividades deportivas, profesores, instalaciones y horarios de entrenamiento.
+
+El bot está disponible en Telegram y permite a los usuarios consultar información deportiva, mientras que los administradores pueden gestionar el contenido de manera completa.
+
+\section{Manual para Usuarios}
+
+\subsection{Primeros Pasos}
+
+\subsubsection{Registro en el Bot}
+
+Al iniciar una conversación con el bot por primera vez usando el comando \texttt{/start}, el sistema solicitará información para el registro:
+
+\begin{enumerate}
+    \item \textbf{Nombre completo}: El usuario debe proporcionar su nombre completo.
+    \item \textbf{Tipo de usuario}: Se debe seleccionar si eres \textbf{Profesor} o \textbf{Estudiante}.
+    \item \textbf{Información adicional} (solo para estudiantes):
+    \begin{itemize}
+        \item Carrera que estudia
+        \item Año académico que cursa
+    \end{itemize}
+\end{enumerate}
+
+Una vez completado el registro, el usuario podrá acceder a todas las funcionalidades del bot.
+
+\subsubsection{Comando de Ayuda}
+
+El comando \texttt{/ayuda} muestra la lista completa de comandos disponibles para el usuario.
+
+\subsection{Comandos Disponibles}
+
+\subsubsection{/start}
+
+Inicia una conversación con el bot. Si el usuario ya está registrado, muestra un mensaje de bienvenida personalizado. Si es administrador, también muestra un botón para acceder al panel de administración.
+
+\subsubsection{/registrar}
+
+Permite iniciar nuevamente el proceso de registro si es necesario.
+
+\subsubsection{/horario}
+
+Muestra un menú interactivo con botones para seleccionar un día de la semana y ver los horarios de entrenamiento correspondientes.
+
+\textbf{Flujo de uso:}
+\begin{enumerate}
+    \item Ejecutar \texttt{/horario}
+    \item Seleccionar un día de la semana de los botones mostrados
+    \item Ver la información detallada de horarios para ese día
+    \item Usar el botón "Volver a días" para seleccionar otro día
+\end{enumerate}
+
+\subsubsection{/listar\_deportes}
+
+Muestra una lista paginada de todos los deportes disponibles. Cada deporte muestra:
+
+\begin{itemize}
+    \item Nombre del deporte
+    \item Profesor responsable
+    \item Contacto del profesor
+    \item Días de práctica
+    \item Horarios
+    \item Lugares donde se practica
+\end{itemize}
+
+\textbf{Características:}
+\begin{itemize}
+    \item Navegación por páginas si hay muchos deportes
+    \item Botones para ver detalles de cada deporte
+    \item Botón "Volver a la lista" para regresar al menú
+\end{itemize}
+
+\subsubsection{/listar\_profesores}
+
+Muestra una lista paginada de todos los profesores disponibles. Para cada profesor se muestra:
+
+\begin{itemize}
+    \item Nombre del profesor
+    \item Deportes que imparte
+    \item Información de contacto
+    \item Horarios de clases
+    \item Lugares donde imparte
+    \item Foto del profesor (si está disponible)
+\end{itemize}
+
+\textbf{Características:}
+\begin{itemize}
+    \item Si el profesor tiene foto, se muestra junto con la información
+    \item Navegación por páginas
+    \item Botones para ver detalles completos
+\end{itemize}
+
+\subsubsection{/listar\_instalaciones}
+
+Muestra una lista paginada de todas las instalaciones deportivas disponibles. Para cada instalación se muestra:
+
+\begin{itemize}
+    \item Nombre de la instalación
+    \item Dirección
+    \item Ubicación en el mapa de Telegram (si hay coordenadas disponibles)
+    \item Foto de la instalación (si está disponible)
+\end{itemize}
+
+\textbf{Características:}
+\begin{itemize}
+    \item Si la instalación tiene coordenadas, se envía la ubicación en el mapa de Telegram
+    \item Si tiene foto, se muestra junto con la información
+    \item Navegación por páginas
+\end{itemize}
+
+\subsubsection{/actividades}
+
+Muestra las noticias y actividades próximas relacionadas con los deportes de la universidad.
+
+\subsubsection{/ayuda}
+
+Muestra la lista completa de comandos disponibles con una breve descripción de cada uno.
+
+\section{Manual para Administradores}
+
+\subsection{Acceso al Panel de Administración}
+
+Los administradores del bot tienen acceso a funciones especiales de gestión. Para acceder:
+
+\begin{enumerate}
+    \item Ejecutar el comando \texttt{/start}
+    \item Si eres administrador, aparecerá un botón \textbf{"[CANDADO] Panel de Administración"}
+    \item Hacer clic en el botón para acceder al menú principal de administración
+\end{enumerate}
+
+\subsection{Menú Principal de Administración}
+
+El panel de administración presenta tres opciones principales:
+
+\begin{itemize}
+    \item \textbf{[TROFEO] Gestión de Deportes}
+    \item \textbf{[PROFESOR] Gestión de Profesores}
+    \item \textbf{[ESTADIO] Gestión de Instalaciones}
+\end{itemize}
+
+Cada opción permite realizar operaciones CRUD completas (Crear, Leer, Actualizar, Eliminar).
+
+\subsection{Gestión de Deportes}
+
+\subsubsection{Menú de Deportes}
+
+Al seleccionar "Gestión de Deportes", se presenta un submenú con las siguientes opciones:
+
+\begin{itemize}
+    \item \textbf{[+] Agregar Deporte}: Inicia el flujo para agregar un nuevo deporte
+    \item \textbf{[LAPIZ] Modificar Deporte}: Permite modificar información de un deporte existente
+    \item \textbf{[BORRAR] Eliminar Deporte}: Permite eliminar un deporte
+    \item \textbf{[LISTA] Listar Deportes}: Muestra todos los deportes con opciones de edición
+\end{itemize}
+
+\subsubsection{Agregar un Nuevo Deporte}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[+] Agregar Deporte"
+    \item El bot solicitará la siguiente información en orden:
+    \begin{enumerate}
+        \item \textbf{Nombre del deporte}
+        \item \textbf{Nombre del profesor} que imparte el deporte
+        \item \textbf{Contacto del profesor} (teléfono o email)
+        \item \textbf{Días de práctica} (ej: "Lunes y miércoles")
+        \item \textbf{Horarios} (ej: "14:00 a 17:00H")
+        \item \textbf{Lugares} donde se practica (puede ser múltiples, separados por coma)
+    \end{enumerate}
+    \item Al finalizar, se muestra un resumen con toda la información
+    \item Confirmar con "[CHECK] Confirmar" o cancelar con "[X] Cancelar"
+\end{enumerate}
+
+\textbf{Ejemplo de datos:}
+\begin{itemize}
+    \item Nombre: Fútbol 11
+    \item Profesor: Armando Najarro Pérez
+    \item Contacto: 5 9745870
+    \item Días: Martes y jueves
+    \item Horario: 14:00 a 17:00H
+    \item Lugar: Terreno de fútbol Estadio universitario Juan Abrantes Fernández
+\end{itemize}
+
+\subsubsection{Modificar un Deporte}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[LAPIZ] Modificar Deporte"
+    \item Seleccionar el deporte a modificar de la lista
+    \item Se muestra la información actual del deporte
+    \item Seleccionar el campo que se desea modificar:
+    \begin{itemize}
+        \item [LAPIZ] Nombre
+        \item [PROFESOR] Profesor
+        \item [TELEFONO] Contacto
+        \item [CALENDARIO] Días
+        \item [RELOJ] Horario
+        \item [UBICACION] Lugar
+    \end{itemize}
+    \item Ingresar el nuevo valor para el campo seleccionado
+    \item El cambio se guarda automáticamente
+\end{enumerate}
+
+\textbf{Nota importante:} Si modificas el nombre del deporte, este se actualizará en todas las referencias.
+
+\subsubsection{Eliminar un Deporte}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[BORRAR] Eliminar Deporte"
+    \item Seleccionar el deporte a eliminar de la lista
+    \item Se muestra una confirmación con el nombre del deporte
+    \item Confirmar con "[CHECK] Sí, eliminar" o cancelar con "[X] Cancelar"
+    \item \textbf{Advertencia:} Esta acción no se puede deshacer
+\end{enumerate}
+
+\subsubsection{Listar Deportes (Modo Admin)}
+
+Al seleccionar "[LISTA] Listar Deportes", se muestra una lista paginada de todos los deportes, cada uno con botones para:
+\begin{itemize}
+    \item [LAPIZ] Modificar
+    \item [BORRAR] Eliminar
+\end{itemize}
+
+\subsection{Gestión de Profesores}
+
+\subsubsection{Menú de Profesores}
+
+Al seleccionar "Gestión de Profesores", se presenta un submenú con las siguientes opciones:
+
+\begin{itemize}
+    \item \textbf{[+] Agregar Profesor}: Inicia el flujo para agregar un nuevo profesor
+    \item \textbf{[LAPIZ] Modificar Profesor}: Permite modificar información de un profesor existente
+    \item \textbf{[BORRAR] Eliminar Profesor}: Permite eliminar un profesor
+    \item \textbf{[LISTA] Listar Profesores}: Muestra todos los profesores con opciones de edición
+\end{itemize}
+
+\subsubsection{Agregar un Nuevo Profesor}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[+] Agregar Profesor"
+    \item El bot solicitará la siguiente información en orden:
+    \begin{enumerate}
+        \item \textbf{Nombre del profesor}
+        \item \textbf{Deportes que imparte} (separados por coma si son múltiples)
+        \item \textbf{Contacto del profesor} (teléfono o email)
+        \item \textbf{Horarios} (días y horarios de clases)
+        \item \textbf{Lugares} donde imparte (puede ser múltiples, separados por coma)
+        \item \textbf{Foto del profesor}: Envía la foto directamente al bot (o escribe "no" si no tienes foto)
+    \end{enumerate}
+    \item Al finalizar, se muestra un resumen con toda la información
+    \item Confirmar con "[CHECK] Confirmar" o cancelar con "[X] Cancelar"
+\end{enumerate}
+
+\textbf{Ejemplo de datos:}
+\begin{itemize}
+    \item Nombre: Juan Antonio Larrude Cárdenas
+    \item Deportes: Judo
+    \item Contacto: 58081119
+    \item Horarios: Lunes y miércoles, 2 pm a 5 pm
+    \item Lugares: Sala judo Estadio universitario Juan Abrantes Fernández
+    \item Foto: Envía la foto directamente al bot usando el botón adjuntar (o escribe "no")
+\end{itemize}
+
+\textbf{Nota sobre fotos:} Las fotos deben enviarse directamente al bot como archivos de imagen. No se aceptan URLs.
+
+\subsubsection{Modificar un Profesor}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[LAPIZ] Modificar Profesor"
+    \item Seleccionar el profesor a modificar de la lista
+    \item Se muestra la información actual del profesor (incluyendo foto si existe)
+    \item Seleccionar el campo que se desea modificar:
+    \begin{itemize}
+        \item [LAPIZ] Nombre
+        \item [TROFEO] Deportes
+        \item [TELEFONO] Contacto
+        \item [RELOJ] Horarios
+        \item [UBICACION] Lugares
+        \item [CAMARA] Foto
+    \end{itemize}
+    \item Ingresar el nuevo valor para el campo seleccionado
+    \item El cambio se guarda automáticamente
+\end{enumerate}
+
+\textbf{Nota importante:} Si modificas el nombre del profesor, este se actualizará en todas las referencias.
+
+\subsubsection{Eliminar un Profesor}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[BORRAR] Eliminar Profesor"
+    \item Seleccionar el profesor a eliminar de la lista
+    \item Se muestra una confirmación con el nombre del profesor
+    \item Confirmar con "[CHECK] Sí, eliminar" o cancelar con "[X] Cancelar"
+    \item \textbf{Advertencia:} Esta acción no se puede deshacer
+\end{enumerate}
+
+\subsection{Gestión de Instalaciones}
+
+\subsubsection{Menú de Instalaciones}
+
+Al seleccionar "Gestión de Instalaciones", se presenta un submenú con las siguientes opciones:
+
+\begin{itemize}
+    \item \textbf{[+] Agregar Instalación}: Inicia el flujo para agregar una nueva instalación
+    \item \textbf{[LAPIZ] Modificar Instalación}: Permite modificar información de una instalación existente
+    \item \textbf{[BORRAR] Eliminar Instalación}: Permite eliminar una instalación
+    \item \textbf{[LISTA] Listar Instalaciones}: Muestra todas las instalaciones con opciones de edición
+\end{itemize}
+
+\subsubsection{Agregar una Nueva Instalación}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[+] Agregar Instalación"
+    \item El bot solicitará la siguiente información en orden:
+    \begin{enumerate}
+        \item \textbf{Nombre de la instalación}
+        \item \textbf{Dirección} de la instalación
+        \item \textbf{Coordenadas geográficas} en formato: \texttt{latitud,longitud}
+        \begin{itemize}
+            \item Ejemplo: \texttt{23.1363,-82.3782}
+            \item O escribir "no" si no se tienen las coordenadas
+        \end{itemize}
+        \item \textbf{Foto de la instalación}: Envía la foto directamente al bot (o escribe "no" si no tienes foto)
+    \end{enumerate}
+    \item Al finalizar, se muestra un resumen con toda la información
+    \item Confirmar con "[CHECK] Confirmar" o cancelar con "[X] Cancelar"
+\end{enumerate}
+
+\textbf{Ejemplo de datos:}
+\begin{itemize}
+    \item Nombre: Piscina de 50 metros
+    \item Dirección: Universidad de La Habana, Vedado, La Habana
+    \item Coordenadas: 23.1363,-82.3782
+    \item Foto: Envía la foto directamente al bot usando el botón adjuntar (o escribe "no")
+\end{itemize}
+
+\textbf{Obtención de coordenadas:}
+\begin{enumerate}
+    \item Abrir Google Maps o cualquier aplicación de mapas
+    \item Buscar la ubicación de la instalación
+    \item Hacer clic derecho en el punto exacto
+    \item Seleccionar las coordenadas o copiar latitud y longitud
+    \item El formato debe ser: número decimal para latitud, número decimal para longitud (separados por coma)
+\end{enumerate}
+
+\subsubsection{Modificar una Instalación}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[LAPIZ] Modificar Instalación"
+    \item Seleccionar la instalación a modificar de la lista
+    \item Se muestra la información actual de la instalación
+    \item Seleccionar el campo que se desea modificar:
+    \begin{itemize}
+        \item [LAPIZ] Nombre
+        \item [UBICACION] Dirección
+        \item [MAPA] Coordenadas (formato: latitud,longitud)
+        \item [CAMARA] Foto
+    \end{itemize}
+    \item Ingresar el nuevo valor para el campo seleccionado
+    \item El cambio se guarda automáticamente
+\end{enumerate}
+
+\textbf{Nota sobre coordenadas:} Al modificar coordenadas, usar el formato \texttt{latitud,longitud} sin espacios adicionales.
+
+\subsubsection{Eliminar una Instalación}
+
+\textbf{Flujo paso a paso:}
+
+\begin{enumerate}
+    \item Seleccionar "[BORRAR] Eliminar Instalación"
+    \item Seleccionar la instalación a eliminar de la lista
+    \item Se muestra una confirmación con el nombre de la instalación
+    \item Confirmar con "[CHECK] Sí, eliminar" o cancelar con "[X] Cancelar"
+    \item \textbf{Advertencia:} Esta acción no se puede deshacer
+\end{enumerate}
+
+\subsection{Consejos para Administradores}
+
+\subsubsection{Mejores Prácticas}
+
+\begin{itemize}
+    \item \textbf{Verificar información antes de agregar}: Asegúrate de tener toda la información correcta antes de iniciar el proceso de agregar un elemento.
+    \item \textbf{Revisar antes de eliminar}: Siempre verifica que estás eliminando el elemento correcto, ya que la acción no se puede deshacer.
+    \item \textbf{Actualizar información regularmente}: Mantén la información actualizada, especialmente horarios y contactos.
+    \item \textbf{Fotos de calidad}: Usa URLs de imágenes de buena calidad y accesibles públicamente.
+    \item \textbf{Coordenadas precisas}: Verifica que las coordenadas sean correctas para que los usuarios puedan encontrar fácilmente las instalaciones.
+\end{itemize}
+
+\subsubsection{Resolución de Problemas}
+
+\textbf{Error: "Debes registrarte antes de usar este comando"}
+\begin{itemize}
+    \item Solución: Ejecutar \texttt{/start} y completar el proceso de registro
+\end{itemize}
+
+\textbf{Error: "Este comando es solo para administradores"}
+\begin{itemize}
+    \item Solución: Verificar que tu user\_id esté en la lista de administradores en \texttt{BD/admins.json}
+\end{itemize}
+
+\textbf{Error: "Button\_data\_invalid"}
+\begin{itemize}
+    \item Causa: Nombres de instalaciones demasiado largos (ya resuelto usando índices)
+    \item Solución: Si ocurre, contactar al desarrollador
+\end{itemize}
+
+\textbf{La foto no se muestra}
+\begin{itemize}
+    \item Verificar que la foto fue enviada directamente al bot (no como URL)
+    \item Verificar que el formato de la imagen sea compatible (jpg, png, etc.)
+    \item Si el problema persiste, intentar enviar la foto nuevamente
+\end{itemize}
+
+\textbf{La ubicación en el mapa no funciona}
+\begin{itemize}
+    \item Verificar que las coordenadas estén en el formato correcto: \texttt{latitud,longitud}
+    \item Verificar que los valores sean números válidos
+    \item Verificar que no haya espacios en el formato de coordenadas
+\end{itemize}
+
+\section{Información Técnica}
+
+\subsection{Estructura de Datos}
+
+\subsubsection{Formato de Deportes}
+
+Cada deporte se almacena con la siguiente estructura:
+
+\begin{verbatim}
+{
+    "Nombre del Deporte": {
+        "profesor": "Nombre del profesor",
+        "contacto": "Teléfono o email",
+        "dias": "Días de práctica",
+        "horario": "Horario de práctica",
+        "lugar": ["Lugar 1", "Lugar 2"]
+    }
+}
+\end{verbatim}
+
+\subsubsection{Formato de Profesores}
+
+Cada profesor se almacena con la siguiente estructura:
+
+\begin{verbatim}
+{
+    "Nombre del Profesor": {
+        "deportes": ["Deporte 1", "Deporte 2"],
+        "contacto": "Teléfono o email",
+        "horarios": "Horarios de clases",
+        "lugares": ["Lugar 1", "Lugar 2"],
+        "foto": "URL de la foto (opcional)"
+    }
+}
+\end{verbatim}
+
+\subsubsection{Formato de Instalaciones}
+
+Cada instalación se almacena con la siguiente estructura:
+
+\begin{verbatim}
+{
+    "Nombre de la Instalación": {
+        "direccion": "Dirección completa",
+        "latitud": 23.1363,
+        "longitud": -82.3782,
+        "foto": "URL de la foto (opcional)"
+    }
+}
+\end{verbatim}
+
+\subsection{Archivos de Configuración}
+
+Los datos se almacenan en archivos JSON dentro de la carpeta \texttt{BD/}:
+
+\begin{itemize}
+    \item \texttt{BD/deportes.json}: Información de todos los deportes
+    \item \texttt{BD/profesores.json}: Información de todos los profesores
+    \item \texttt{BD/instalaciones.json}: Información de todas las instalaciones
+    \item \texttt{BD/usuarios.json}: Información de usuarios registrados
+    \item \texttt{BD/admins.json}: Lista de IDs de administradores
+    \item \texttt{BD/noticias.json}: Noticias y actividades
+\end{itemize}
+
+\subsection{Límites del Sistema}
+
+\begin{itemize}
+    \item \textbf{Longitud de callback\_data}: Máximo 64 bytes (el sistema usa índices para evitar este problema)
+    \item \textbf{Fotos}: Deben ser URLs públicas accesibles o file IDs de Telegram
+    \item \textbf{Coordenadas}: Formato decimal estándar (latitud, longitud)
+\end{itemize}
+
+\section{Contacto y Soporte}
+
+Para reportar problemas o solicitar ayuda:
+
+\begin{itemize}
+    \item Revisar este manual primero
+    \item Verificar los archivos de log del bot
+    \item Contactar al equipo de desarrollo
+\end{itemize}
+
+\section{Apéndices}
+
+\subsection{Apéndice A: Tabla de Comandos}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Comando} & \textbf{Descripción} \\
+\hline
+/start & Inicia el bot y muestra bienvenida \\
+/registrar & Inicia proceso de registro \\
+/horario & Muestra horarios por día \\
+/listar\_deportes & Lista todos los deportes \\
+/listar\_profesores & Lista todos los profesores \\
+/listar\_instalaciones & Lista todas las instalaciones \\
+/actividades & Muestra noticias y actividades \\
+/ayuda & Muestra lista de comandos \\
+\hline
+\end{tabular}
+\caption{Comandos disponibles para usuarios}
+\end{table}
+
+\subsection{Apéndice B: Formatos de Entrada}
+
+\subsubsection{Coordenadas}
+
+Formato: \texttt{latitud,longitud}
+
+Ejemplos válidos:
+\begin{itemize}
+    \item \texttt{23.1363,-82.3782}
+    \item \texttt{23.1363, -82.3782} (con espacio, se acepta)
+    \item \texttt{-23.1363,82.3782} (coordenadas en hemisferio sur)
+\end{itemize}
+
+\subsubsection{Lugares Múltiples}
+
+Cuando se solicitan múltiples lugares o deportes, separar con coma y espacio:
+
+Ejemplo: \texttt{Lugar 1, Lugar 2, Lugar 3}
+
+\subsubsection{URLs de Fotos}
+
+Las fotos deben enviarse directamente al bot como archivos de imagen. No se aceptan URLs.
+
+\textbf{Proceso para agregar una foto:}
+\begin{enumerate}
+    \item Cuando el bot solicite la foto, abre la galería o cámara desde Telegram
+    \item Selecciona o toma la foto que deseas usar
+    \item Envía la foto directamente al bot
+    \item El bot confirmará que recibió la foto correctamente
+\end{enumerate}
+
+\textbf{Si no tienes foto:} Simplemente escribe "no" cuando el bot solicite la foto.
+
+\vspace{2cm}
+
+\begin{center}
+\textit{Documento generado automáticamente}\\
+\textit{Bot Deportivo de la Universidad de La Habana}\\
+\textit{Versión 1.0}
+\end{center}
+
+\end{document}
+

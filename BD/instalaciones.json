@@ -1,28 +1,132 @@
-[
-  "Tabloncillo Ramiro Valdés Daussá",
-  "Sala de deportes de combate",
-  "Laboratorio de cultura física",
-  "Cancha de usos múltiples (baloncesto, béisbol cinco, futbol sala, balonmano)",
-  "Piscina de 50 metros",
-  "Pista de atletismo",
-  "Campo de fútbol 11 y futbol rugby",
-  "Sala de gimnasia rítmica y artística",
-  "Sala de gimnasia musical aerobia",
-  "Área terapéutica de la cultura física",
-  "Cancha de frontenis",
-  "Campo de tiro",
-  "Cancha de voleibol de playa",
-  "Gimnasio biosaludable, sala de musculación",
-  "Escalada",
-  "Cátedra de ajedrez",
-  "Cátedra de deporte electrónico",
-  "Salón de conferencias Antonio Barroso",
-  "Sala de informática",
-  "Despachos (5)",
-  "Cátedras del personal docente investigador con baños (4)",
-  "Taquillas (4)",
-  "Carpintería (2)",
-  "Oficina administrativa",
-  "Almacenes (6)",
-  "Cafeterías (2)"
-]
+{
+  "Tabloncillo Ramiro Valdés Daussá": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Sala de deportes de combate": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Laboratorio de cultura física": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cancha de usos múltiples (baloncesto, béisbol cinco, futbol sala, balonmano)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Piscina de 50 metros": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Pista de atletismo": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Campo de fútbol 11 y futbol rugby": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Sala de gimnasia rítmica y artística": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Sala de gimnasia musical aerobia": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Área terapéutica de la cultura física": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cancha de frontenis": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Campo de tiro": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cancha de voleibol de playa": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Gimnasio biosaludable, sala de musculación": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Escalada": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cátedra de ajedrez": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cátedra de deporte electrónico": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Salón de conferencias Antonio Barroso": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Sala de informática": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Despachos (5)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cátedras del personal docente investigador con baños (4)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Taquillas (4)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Carpintería (2)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Oficina administrativa": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Almacenes (6)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  },
+  "Cafeterías (2)": {
+    "direccion": "Universidad de La Habana, Vedado, La Habana",
+    "latitud": 23.1363,
+    "longitud": -82.3782
+  }
+}

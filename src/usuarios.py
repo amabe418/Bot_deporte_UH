@@ -19,7 +19,11 @@ def usuario_registrado(func):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_id = str(update.effective_user.id)
         if user_id not in usuarios:
-            await update.message.reply_text("🚫 Debes registrarte antes de usar este comando.")
+            # Manejar tanto mensajes como callbacks
+            if update.message:
+                await update.message.reply_text("🚫 Debes registrarte antes de usar este comando.")
+            elif update.callback_query:
+                await update.callback_query.answer("🚫 Debes registrarte antes de usar este comando.", show_alert=True)
             return
         return await func(update, context)
     return wrapper
@@ -46,7 +50,8 @@ def guardar_usuario_completo(user_id, username, context):
         }
     }
     guardar_usuarios(usuarios)
-    if not admin.ADMIN_IDS: 
+    # Solo hacer admin al primer usuario si no hay ningún admin registrado
+    if not admin.ADMIN_IDS or len(admin.ADMIN_IDS) == 0:
         admin.ADMIN_IDS = [user_id]
         guardar_admins(admin.ADMIN_IDS)
 

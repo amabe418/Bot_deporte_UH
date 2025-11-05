@@ -1,8 +1,8 @@
 
 
 import json
-from telegram import Update, InlineKeyboardButton,InlineKeyboardMarkup
-from telegram.ext import  ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ContextTypes
 from telegram.helpers import escape_markdown
 from usuarios import usuario_registrado
 
@@ -80,18 +80,57 @@ async def mostrar_info_profesor(update: Update, context: ContextTypes.DEFAULT_TY
             f"🕒 *Horarios:* {horarios}\n"
             f"📍 *Lugares:* {lugares_str}"
         )
+        
+        # Obtener la foto del profesor si está disponible
+        foto_url = info.get("foto", None) or info.get("foto_url", None)
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔙 Volver a la lista", callback_data="volver_profesores")]
+        ])
+
+        # Si hay foto, enviarla con el mensaje como caption
+        if foto_url:
+            try:
+                # Enviar la foto con el mensaje como caption
+                await query.message.reply_photo(
+                    photo=foto_url,
+                    caption=mensaje,
+                    reply_markup=reply_markup,
+                    parse_mode='MarkdownV2'
+                )
+                # Editar el mensaje anterior para ocultar el botón y dejar solo texto
+                try:
+                    await query.edit_message_text(
+                        text="📷 Foto del profesor arriba 👆",
+                        reply_markup=None
+                    )
+                except:
+                    # Si no se puede editar, simplemente dejamos el mensaje anterior
+                    pass
+            except Exception as e:
+                # Si falla enviar la foto, mostrar solo el texto
+                print(f"Error al enviar foto del profesor {nombre}: {e}")
+                await query.edit_message_text(
+                    text=mensaje,
+                    reply_markup=reply_markup,
+                    parse_mode='MarkdownV2'
+                )
+        else:
+            # Si no hay foto, mostrar solo el texto como antes
+            await query.edit_message_text(
+                text=mensaje,
+                reply_markup=reply_markup,
+                parse_mode='MarkdownV2'
+            )
     else:
         mensaje = escape_markdown(f"No hay información disponible para {nombre}.", version=2)
-
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔙 Volver a la lista", callback_data="volver_profesores")]
-    ])
-
-    await query.edit_message_text(
-        text=mensaje,
-        reply_markup=reply_markup,
-        parse_mode='MarkdownV2'
-    )
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔙 Volver a la lista", callback_data="volver_profesores")]
+        ])
+        await query.edit_message_text(
+            text=mensaje,
+            reply_markup=reply_markup,
+            parse_mode='MarkdownV2'
+        )
 
 
 async def listar_profesores_callback(update:Update,context:ContextTypes.DEFAULT_TYPE):

@@ -17,8 +17,8 @@ def cargar_actividades():
 async def actividades(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
-        [InlineKeyboardButton(deporte["nombre"], callback_data=f"actividad_{deporte['nombre']}")]
-        for deporte in deporte.deportes_info
+        [InlineKeyboardButton(nombre_deporte, callback_data=f"actividad_{nombre_deporte}")]
+        for nombre_deporte in deporte.deportes_info.keys()
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -46,8 +46,8 @@ async def actividades_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     await query.answer()
     
     keyboard = [
-        [InlineKeyboardButton(deporte["nombre"], callback_data=f"actividad_{deporte['nombre']}")]
-        for deporte in deporte.deportes_info
+        [InlineKeyboardButton(nombre_deporte, callback_data=f"actividad_{nombre_deporte}")]
+        for nombre_deporte in deporte.deportes_info.keys()
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     

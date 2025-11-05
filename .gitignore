@@ -1,6 +1,30 @@
-
+# Variables de entorno
 .env
+
+# Token del bot
 token.txt
-usuarios.json
-admins.json
-__pycache__
+src/token.txt
+
+# Base de datos completa (contiene datos sensibles)
+BD/
+*.json
+
+# Archivos Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Entornos virtuales
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs
+*.log
+
+# Docker
+.dockerignore

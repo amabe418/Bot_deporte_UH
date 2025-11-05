@@ -7,8 +7,15 @@ WORKDIR /app
 # Copia los archivos del proyecto al contenedor
 COPY . .
 
+# Cambia al directorio src y instala las dependencias
+WORKDIR /app/src
+
 # Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Comando para ejecutar el bot
-CMD ["python", "bot.py"]
+# Declara el volumen para la base de datos
+# Esto permite que los datos persistan fuera del contenedor
+VOLUME ["/app/BD"]
+
+# Comando para ejecutar el bot (desde src/)
+CMD ["python", "main.py"]
